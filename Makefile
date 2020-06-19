@@ -37,7 +37,7 @@ Convert: raw2bin bin2bin bin2txt txt2bin kaldi2bin
 #raw2bin: srci/raw2bin.cpp; $(ss) srci/$@.cpp > src/$@.cpp; #then delete read input header section
 raw2bin: src/raw2bin.cpp
 	$(CC) -c src/$@.cpp -oobj/$@.o $(CFLAGS); $(CC) obj/$@.o -obin/$@ -largtable2
-#bin2bin: srci/bin2bin.cpp; $(ss) srci/$@.cpp > src/$@.cpp; #then delete
+#bin2bin: srci/bin2bin.cpp; $(ss) srci/$@.cpp > src/$@.cpp; #then delete sections
 bin2bin: src/bin2bin.cpp
 	$(CC) -c src/$@.cpp -oobj/$@.o $(CFLAGS); $(CC) obj/$@.o -obin/$@ -largtable2
 bin2txt: srci/bin2txt.cpp
