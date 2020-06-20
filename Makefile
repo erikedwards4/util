@@ -5,7 +5,7 @@
 #This is the makefile for the command-line tools in C++.
 
 #This is a collection of my own programs to do basic support, conversion, and selection tasks.
-#These are the only functions written in pure C++ and that support all data types.
+#These are functions written in pure C++ and that generally support all data types.
 
 SHELL=/bin/bash
 
@@ -14,17 +14,17 @@ ss=bin/srci2src
 CC=clang++
 
 ifeq ($(CC),clang++)
-	STD=-std=c++11
+	STD=-std=c++17
 	WFLAG=-Weverything -Wno-c++98-compat -Wno-padded -Wno-old-style-cast -Wno-gnu-imaginary-constant
 else
-	STD=-std=gnu++14
+	STD=-std=gnu++17
 	WFLAG=-Wall -Wextra
 endif
 
 CFLAGS=$(WFLAG) -O3 $(STD) -march=native -Ic
 
 
-utils: CLI_gen Convert Select
+utils: CLI_gen Convert Select Info Classify Numeric Shift
 
 #CLI_gen: for generating command-line programs, i.e. converting from shorter srci files to full src files
 CLI_gen: srci2src
@@ -67,6 +67,82 @@ slices: srci/slices.cpp
 hyperslices: srci/hyperslices.cpp
 	$(ss) srci/$@.cpp > src/$@.cpp; $(CC) -c src/$@.cpp -oobj/$@.o $(CFLAGS); $(CC) obj/$@.o -obin/$@ -largtable2
 sel: srci/sel.cpp
+	$(ss) srci/$@.cpp > src/$@.cpp; $(CC) -c src/$@.cpp -oobj/$@.o $(CFLAGS); $(CC) obj/$@.o -obin/$@ -largtable2
+
+
+#Info: obtain info about matrix size and shape (directly from header!)
+Info: size length numel sizeof isempty isscalar isvec ismat iscube isrowvec iscolvec issquare
+size: srci/size.cpp
+	$(ss) srci/$@.cpp > src/$@.cpp; $(CC) -c src/$@.cpp -oobj/$@.o $(CFLAGS); $(CC) obj/$@.o -obin/$@ -largtable2
+length: srci/length.cpp
+	$(ss) srci/$@.cpp > src/$@.cpp; $(CC) -c src/$@.cpp -oobj/$@.o $(CFLAGS); $(CC) obj/$@.o -obin/$@ -largtable2
+numel: srci/numel.cpp
+	$(ss) srci/$@.cpp > src/$@.cpp; $(CC) -c src/$@.cpp -oobj/$@.o $(CFLAGS); $(CC) obj/$@.o -obin/$@ -largtable2
+nbytes: srci/nbytes.cpp
+	$(ss) srci/$@.cpp > src/$@.cpp; $(CC) -c src/$@.cpp -oobj/$@.o $(CFLAGS); $(CC) obj/$@.o -obin/$@ -largtable2
+sizeof: srci/sizeof.cpp
+	$(ss) srci/$@.cpp > src/$@.cpp; $(CC) -c src/$@.cpp -oobj/$@.o $(CFLAGS); $(CC) obj/$@.o -obin/$@ -largtable2
+isempty: srci/isempty.cpp
+	$(ss) srci/$@.cpp > src/$@.cpp; $(CC) -c src/$@.cpp -oobj/$@.o $(CFLAGS); $(CC) obj/$@.o -obin/$@ -largtable2
+isscalar: srci/isscalar.cpp
+	$(ss) srci/$@.cpp > src/$@.cpp; $(CC) -c src/$@.cpp -oobj/$@.o $(CFLAGS); $(CC) obj/$@.o -obin/$@ -largtable2
+isvec: srci/isvec.cpp
+	$(ss) srci/$@.cpp > src/$@.cpp; $(CC) -c src/$@.cpp -oobj/$@.o $(CFLAGS); $(CC) obj/$@.o -obin/$@ -largtable2
+ismat: srci/ismat.cpp
+	$(ss) srci/$@.cpp > src/$@.cpp; $(CC) -c src/$@.cpp -oobj/$@.o $(CFLAGS); $(CC) obj/$@.o -obin/$@ -largtable2
+iscube: srci/iscube.cpp
+	$(ss) srci/$@.cpp > src/$@.cpp; $(CC) -c src/$@.cpp -oobj/$@.o $(CFLAGS); $(CC) obj/$@.o -obin/$@ -largtable2
+isrowvec: srci/isrowvec.cpp
+	$(ss) srci/$@.cpp > src/$@.cpp; $(CC) -c src/$@.cpp -oobj/$@.o $(CFLAGS); $(CC) obj/$@.o -obin/$@ -largtable2
+iscolvec: srci/iscolvec.cpp
+	$(ss) srci/$@.cpp > src/$@.cpp; $(CC) -c src/$@.cpp -oobj/$@.o $(CFLAGS); $(CC) obj/$@.o -obin/$@ -largtable2
+issquare: srci/issquare.cpp
+	$(ss) srci/$@.cpp > src/$@.cpp; $(CC) -c src/$@.cpp -oobj/$@.o $(CFLAGS); $(CC) obj/$@.o -obin/$@ -largtable2
+
+
+#Classify: 1 input, 1 output elementwise (returns int8_t datatype since boolean)
+Classify: isnan isfinite isinf isnormal signbit
+isnan: srci/isnan.cpp
+	$(ss) srci/$@.cpp > src/$@.cpp; $(CC) -c src/$@.cpp -oobj/$@.o $(CFLAGS); $(CC) obj/$@.o -obin/$@ -largtable2
+isfinite: srci/isfinite.cpp
+	$(ss) srci/$@.cpp > src/$@.cpp; $(CC) -c src/$@.cpp -oobj/$@.o $(CFLAGS); $(CC) obj/$@.o -obin/$@ -largtable2
+isinf: srci/isinf.cpp
+	$(ss) srci/$@.cpp > src/$@.cpp; $(CC) -c src/$@.cpp -oobj/$@.o $(CFLAGS); $(CC) obj/$@.o -obin/$@ -largtable2
+isnormal: srci/isnormal.cpp
+	$(ss) srci/$@.cpp > src/$@.cpp; $(CC) -c src/$@.cpp -oobj/$@.o $(CFLAGS); $(CC) obj/$@.o -obin/$@ -largtable2
+signbit: srci/signbit.cpp
+	$(ss) srci/$@.cpp > src/$@.cpp; $(CC) -c src/$@.cpp -oobj/$@.o $(CFLAGS); $(CC) obj/$@.o -obin/$@ -largtable2
+
+
+#Compare: 2 inputs, 1 output elementwise with broadcasting (returns int8_t datatype since boolean)
+Compare: isgreater isgreaterequal isless islessequal islessgreater isunordered
+isgreater: srci/isgreater.cpp
+	$(ss) srci/$@.cpp > src/$@.cpp; $(CC) -c src/$@.cpp -oobj/$@.o $(CFLAGS); $(CC) obj/$@.o -obin/$@ -largtable2
+isgreaterequal: srci/isgreaterequal.cpp
+	$(ss) srci/$@.cpp > src/$@.cpp; $(CC) -c src/$@.cpp -oobj/$@.o $(CFLAGS); $(CC) obj/$@.o -obin/$@ -largtable2
+isless: srci/isless.cpp
+	$(ss) srci/$@.cpp > src/$@.cpp; $(CC) -c src/$@.cpp -oobj/$@.o $(CFLAGS); $(CC) obj/$@.o -obin/$@ -largtable2
+islessequal: srci/islessequal.cpp
+	$(ss) srci/$@.cpp > src/$@.cpp; $(CC) -c src/$@.cpp -oobj/$@.o $(CFLAGS); $(CC) obj/$@.o -obin/$@ -largtable2
+islessgreater: srci/islessgreater.cpp
+	$(ss) srci/$@.cpp > src/$@.cpp; $(CC) -c src/$@.cpp -oobj/$@.o $(CFLAGS); $(CC) obj/$@.o -obin/$@ -largtable2
+isunordered: srci/isunordered.cpp
+	$(ss) srci/$@.cpp > src/$@.cpp; $(CC) -c src/$@.cpp -oobj/$@.o $(CFLAGS); $(CC) obj/$@.o -obin/$@ -largtable2
+
+
+#Numeric: 2 inputs, 1 output elementwise with broadcasting (only integer datatypes)
+Numeric: gcd lcm
+gcd: srci/gcd.cpp
+	$(ss) srci/$@.cpp > src/$@.cpp; $(CC) -c src/$@.cpp -oobj/$@.o $(CFLAGS); $(CC) obj/$@.o -obin/$@ -largtable2
+lcm: srci/lcm.cpp
+	$(ss) srci/$@.cpp > src/$@.cpp; $(CC) -c src/$@.cpp -oobj/$@.o $(CFLAGS); $(CC) obj/$@.o -obin/$@ -largtable2
+
+
+#Shift: 1 input, 1 output, shifts elements in flattened (global) order
+Shift: shift cshift
+shift: srci/shift.cpp
+	$(ss) srci/$@.cpp > src/$@.cpp; $(CC) -c src/$@.cpp -oobj/$@.o $(CFLAGS); $(CC) obj/$@.o -obin/$@ -largtable2
+cshift: srci/cshift.cpp
 	$(ss) srci/$@.cpp > src/$@.cpp; $(CC) -c src/$@.cpp -oobj/$@.o $(CFLAGS); $(CC) obj/$@.o -obin/$@ -largtable2
 
 

@@ -40,6 +40,8 @@ int main(int argc, char *argv[])
     string descr;
     descr += "Gets a single column of X.\n";
     descr += "\n";
+    descr += "Use -c (--col) to specify the column number [default=0].\n";
+    descr += "\n";
     descr += "Examples:\n";
     descr += "$ col -c2 X -o Y \n";
     descr += "$ col -c2 X > Y \n";
@@ -102,7 +104,8 @@ int main(int argc, char *argv[])
 
     //Set output header info
     o1.F = i1.F; o1.T = i1.T;
-    o1.R = i1.R; o1.C = 1u; o1.S = i1.S; o1.H = i1.H;
+    o1.R = i1.R; o1.C = 1u;
+    o1.S = i1.S; o1.H = i1.H;
 
 
     //Open output
