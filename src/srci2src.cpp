@@ -563,6 +563,7 @@ int main(int argc, char *argv[])
     while (line.compare(0,9,"//Process")!=0) { getline(ifs,line); }
     cout << endl;
     cout << ind << "//Process" << endl;
+    if (a_t->count>0) { cout << ind << "clock_gettime(CLOCK_REALTIME,&tic);" << endl; }
     if (I>0 || O>0)
     {
         getline(ifs,line);
