@@ -146,6 +146,14 @@ cshift: srci/cshift.cpp
 	$(ss) srci/$@.cpp > src/$@.cpp; $(CC) -c src/$@.cpp -oobj/$@.o $(CFLAGS); $(CC) obj/$@.o -obin/$@ -largtable2
 
 
+#Reshape: 1 input, 1 output with same total size, but different shape (by hdr change only!)
+Reshape: reshape vec
+reshape: srci/reshape.cpp
+	$(ss) srci/$@.cpp > src/$@.cpp; $(CC) -c src/$@.cpp -oobj/$@.o $(CFLAGS); $(CC) obj/$@.o -obin/$@ -largtable2
+vec: srci/vec.cpp
+	$(ss) srci/$@.cpp > src/$@.cpp; $(CC) -c src/$@.cpp -oobj/$@.o $(CFLAGS); $(CC) obj/$@.o -obin/$@ -largtable2
+
+
 clean:
 	find ./obj -type f -name *.o | xargs rm -f
 	rm -f 7
