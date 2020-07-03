@@ -17,15 +17,15 @@ Input/output is supported for NumPy tensors (https://numpy.org/), and several C+
 Armadillo (http://arma.sourceforge.net/), ArrayFire (https://arrayfire.com/),  
 and my own a minimal format for Eigen (http://eigen.tuxfamily.org/).  
 
-The C++ command-line programs are written in a consistent style that was carefully developed during the CMLI project.  
-In fact, to accelerate the production of command-line tools, I developed an automatic-programming program srci2src.cpp.  
+The C++ command-line code is written in a consistent style, as carefully developed during the CMLI project.  
+To accelerate the production of command-line tools, I developed an automatic-programming program srci2src.cpp.  
 This converts a short source code (srci) to full-length source code (src) in the consistent style.  
 It allows me to generate a command-line tool very quickly, starting with a C or C++ function.
 This particular program is only intended for use by myself during development.  
 The resulting command-line tools can be used by anyone.  
 
 All of the command-line tools use argtable2 (http://argtable.sourceforge.net/) for parsing inputs and option flags.  
-For any of these, use -h (--help) as a flag to get help (description and usage examples).  
+For any tool, use -h (--help) as a flag to get help (gives description and basic usage examples).  
 
 The conventions, style and header (cmli.cpp) established here are used throughout my other repos.  
 
@@ -53,7 +53,7 @@ For example:
 /opt/codee/util/bin/sel --help
 ```
 
-Since these utils are often used, a shell variable can be defined:
+Since these utils are used often, a shell variable can be defined:
 ```console
 u=/opt/codee/util/bin
 ```
@@ -65,14 +65,14 @@ $u/sel --help
 
 
 ## List of functions
-Convert: raw2bin bin2bin bin2txt txt2bin kaldi2bin  
-Select: col cols row rows slice slices hyperslice hyperslices sel  
-Info: size length numel sizeof isempty isscalar isvec ismat iscube isrowvec iscolvec issquare  
-Classify: isnan isfinite isinf isnormal signbit  
-Compare: isgreater isgreaterequal isless islessequal islessgreater isunordered  
-Numeric: gcd lcm  
-Shift: shift cshift  
-Reshape: reshape vec  
+Convert: raw2bin, bin2bin, bin2txt, txt2bin, kaldi2bin  
+Select: col, cols, row, rows, slice, slices, hyperslice, hyperslices, sel  
+Info: size, length, numel, sizeof, isempty, isscalar, isvec, ismat, iscube, isrowvec, iscolvec, issquare  
+Classify: isnan, isfinite, isinf, isnormal, signbit  
+Compare: isgreater, isgreaterequal, isless, islessequal, islessgreater, isunordered  
+Numeric: gcd, lcm  
+Shift: shift, cshift  
+Reshape: reshape, vec  
 
 
 ## Contributing
