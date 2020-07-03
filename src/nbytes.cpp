@@ -8,7 +8,6 @@
 #include <string>
 #include <cstring>
 #include <valarray>
-#include <complex>
 #include <unordered_map>
 #include <argtable2.h>
 #include "/home/erik/codee/util/cmli.hpp"
@@ -28,7 +27,7 @@ int main(int argc, char *argv[])
     const string errstr = ": \033[1;31merror:\033[0m ";
     const string warstr = ": \033[1;35mwarning:\033[0m ";
     const string progstr(__FILE__,string(__FILE__).find_last_of("/")+1,strlen(__FILE__)-string(__FILE__).find_last_of("/")-5);
-    const valarray<uint8_t> oktypes = {1,2,3,8,9,16,17,32,33,64,65,101,102,103};
+    const valarray<uint8_t> oktypes = {1,2,3,8,9,10,16,17,32,33,64,65,101,102,103};
     const size_t I = 1, O = 1;
     ifstream ifs1; ofstream ofs1;
     int8_t stdi1, stdo1, wo1;
@@ -129,6 +128,9 @@ int main(int argc, char *argv[])
     {
     }
     else if (i1.T==9)
+    {
+    }
+    else if (i1.T==10)
     {
     }
     else if (i1.T==16)

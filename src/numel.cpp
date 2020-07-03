@@ -8,7 +8,6 @@
 #include <string>
 #include <cstring>
 #include <valarray>
-#include <complex>
 #include <unordered_map>
 #include <argtable2.h>
 #include "/home/erik/codee/util/cmli.hpp"
@@ -28,7 +27,7 @@ int main(int argc, char *argv[])
     const string errstr = ": \033[1;31merror:\033[0m ";
     const string warstr = ": \033[1;35mwarning:\033[0m ";
     const string progstr(__FILE__,string(__FILE__).find_last_of("/")+1,strlen(__FILE__)-string(__FILE__).find_last_of("/")-5);
-    const valarray<uint8_t> oktypes = {1,2,3,8,9,16,17,32,33,64,65,101,102,103};
+    const valarray<uint8_t> oktypes = {1,2,3,8,9,10,16,17,32,33,64,65,101,102,103};
     const size_t I = 1, O = 1;
     ifstream ifs1; ofstream ofs1;
     int8_t stdi1, stdo1, wo1;
@@ -115,4 +114,66 @@ int main(int argc, char *argv[])
     
 
     //Process
+    if (i1.T==1)
+    {
+    }
+    else if (i1.T==2)
+    {
+    }
+    else if (i1.T==3)
+    {
+    }
+    else if (i1.T==8)
+    {
+    }
+    else if (i1.T==9)
+    {
+    }
+    else if (i1.T==10)
+    {
+    }
+    else if (i1.T==16)
+    {
+    }
+    else if (i1.T==17)
+    {
+    }
+    else if (i1.T==32)
+    {
+    }
+    else if (i1.T==33)
+    {
+    }
+    else if (i1.T==64)
+    {
+    }
+    else if (i1.T==65)
+    {
+    }
+    else if (i1.T==101)
+    {
+    }
+    else if (i1.T==102)
+    {
+    }
+    else if (i1.T==103)
+    {
+    }
+    else
+    {
+        cerr << progstr+": " << __LINE__ << errstr << "data type not supported" << endl; return 1;
+    }
     
+
+    //Finish
+    if (wo1)
+    {
+        try { ofs1.write(reinterpret_cast<char*>(&y),o1.nbytes()); }
+        catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output file (Y)" << endl; return 1; }
+    }
+
+
+    //Exit
+    return ret;
+}
+

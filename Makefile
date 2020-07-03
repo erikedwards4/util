@@ -24,7 +24,7 @@ endif
 CFLAGS=$(WFLAG) -O3 $(STD) -march=native -Ic
 
 
-utils: CLI_gen Convert Select Info Classify Numeric Shift
+all: CLI_gen Convert Select Info Classify Numeric Shift
 
 #CLI_gen: for generating command-line programs, i.e. converting from shorter srci files to full src files
 CLI_gen: srci2src

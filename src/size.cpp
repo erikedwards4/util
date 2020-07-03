@@ -8,7 +8,6 @@
 #include <string>
 #include <cstring>
 #include <valarray>
-#include <complex>
 #include <unordered_map>
 #include <argtable2.h>
 #include "/home/erik/codee/util/cmli.hpp"
@@ -28,7 +27,7 @@ int main(int argc, char *argv[])
     const string errstr = ": \033[1;31merror:\033[0m ";
     const string warstr = ": \033[1;35mwarning:\033[0m ";
     const string progstr(__FILE__,string(__FILE__).find_last_of("/")+1,strlen(__FILE__)-string(__FILE__).find_last_of("/")-5);
-    const valarray<uint8_t> oktypes = {1,2,3,8,9,16,17,32,33,64,65,101,102,103};
+    const valarray<uint8_t> oktypes = {1,2,3,8,9,10,16,17,32,33,64,65,101,102,103};
     const size_t I = 1, O = 1;
     ifstream ifs1; ofstream ofs1;
     int8_t stdi1, stdo1, wo1;
@@ -39,7 +38,7 @@ int main(int argc, char *argv[])
     //Description
     string descr;
     descr += "Gets size of input X as 4-element row vector Y.\n";
-    descr += "This is [R C S H], where\n";
+    descr += "This is [R C S H], where: \n";
     descr += "R is number of rows in X \n";
     descr += "C is number of columns in X \n";
     descr += "S is number of slices in X \n";
@@ -134,6 +133,9 @@ int main(int argc, char *argv[])
     {
     }
     else if (i1.T==9)
+    {
+    }
+    else if (i1.T==10)
     {
     }
     else if (i1.T==16)

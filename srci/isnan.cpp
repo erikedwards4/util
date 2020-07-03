@@ -1,5 +1,6 @@
 //Includes
 #include <cmath>
+#include <complex>
 
 //Declarations
 const valarray<uint8_t> oktypes = {1,2,3,101,102,103};
@@ -65,4 +66,3 @@ else if (i1.T==101)
 }
 
 //Finish
-

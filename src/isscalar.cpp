@@ -37,12 +37,12 @@ int main(int argc, char *argv[])
 
     //Description
     string descr;
-    descr += "Returns 0/1 if X is empty.\n";
+    descr += "Returns 0/1 if X is a scalar (size = [1 1 1 1]).\n";
     descr += "\n";
     descr += "Examples:\n";
-    descr += "$ isempty X -o Y \n";
-    descr += "$ isempty X > Y \n";
-    descr += "$ cat X | isempty > Y \n";
+    descr += "$ isscalar X -o Y \n";
+    descr += "$ isscalar X > Y \n";
+    descr += "$ cat X | isscalar > Y \n";
 
 
     //Argtable
@@ -110,7 +110,7 @@ int main(int argc, char *argv[])
 
 
     //Other prep
-    y = i1.isempty();
+    y = i1.isscalar();
     
 
     //Process
