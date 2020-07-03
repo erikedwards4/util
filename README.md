@@ -6,34 +6,39 @@ Erik Edwards (erik.edwards4@gmail.com)
 
 ================================================
 
-This is a set command-line tools in C++ that do conversion and selection utilities.  
-
-The command-line programs are written in C++ with a consistent style and interface.  
+Command-line tools in C++ for conversion, selection, and basic info.  
 These util functions support all data types and up to 4-D tensors.  
 
-This also has the all-important header file cmli.cpp.  
-This is from a general project "command-line libraries" to allow intercommunication between NumPy and various C++ numerical libraries.
+This also has the header file cmli.cpp that is used for all of my command-line tools.  
+This is from my previous general project "command-line libraries" (CMLI), which was to  
+allow command-line use and intercommunication between NumPy and various C++ numerical libraries.  
 
 Input/output is supported for NumPy tensors (https://numpy.org/), and several C++ tensor formats:  
-Armadillo (http://arma.sourceforge.net/),  
-ArrayFire (https://arrayfire.com/),  
+Armadillo (http://arma.sourceforge.net/), ArrayFire (https://arrayfire.com/),  
 and my own a minimal format for Eigen (http://eigen.tuxfamily.org/).  
 
-The C++ command-line programs are written in a consistent style that was developed for command-line tools in general.  
-All of these command-line tools use argtable2 (http://argtable.sourceforge.net/) for parsing inputs and option flags.  
+The C++ command-line programs are written in a consistent style that was carefully developed during the CMLI project.  
+In fact, to accelerate the production of command-line tools, I developed an automatic-programming program srci2src.cpp.  
+This converts a short source code (srci) to full-length source code (src) in the consistent style.  
+It allows me to generate a command-line tool very quickly, starting with a C or C++ function.
+This particular program is only intended for use by myself during development.  
+The resulting command-line tools can be used by anyone.  
+
+All of the command-line tools use argtable2 (http://argtable.sourceforge.net/) for parsing inputs and option flags.  
 For any of these, use -h (--help) as a flag to get help (description and usage examples).  
 
+The conventions, style and header (cmli.cpp) established here are used throughout my other repos.  
 
 ## Dependencies
 Requires argtable2, openBLAS.  
 For Ubuntu, these are available by apt-get:  
-```
+```console
 sudo apt-get install libargtable2-0 libblas3 libopenblas-base
 ```
 
 
 ## Installation
-```
+```console
 cd /opt/codee  
 git clone https://github.com/erikedwards4/util  
 cd /opt/codee/util  
@@ -44,9 +49,30 @@ make
 ## Usage
 See each resulting command-line tool for help (use -h or --help option).  
 For example:  
-```
+```console
 /opt/codee/util/bin/sel --help
 ```
+
+Since these utils are often used, a shell variable can be defined:
+```console
+u=/opt/codee/util/bin
+```
+
+This shortens the above to:
+```console
+$u/sel --help
+```
+
+
+## List of functions
+Convert: raw2bin bin2bin bin2txt txt2bin kaldi2bin  
+Select: col cols row rows slice slices hyperslice hyperslices sel  
+Info: size length numel sizeof isempty isscalar isvec ismat iscube isrowvec iscolvec issquare  
+Classify: isnan isfinite isinf isnormal signbit  
+Compare: isgreater isgreaterequal isless islessequal islessgreater isunordered  
+Numeric: gcd lcm  
+Shift: shift cshift  
+Reshape: reshape vec  
 
 
 ## Contributing
