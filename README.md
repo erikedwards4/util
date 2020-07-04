@@ -17,8 +17,8 @@ and my own a minimal format for Eigen (http://eigen.tuxfamily.org/).
 
 The C++ command-line code is written in a consistent style, as carefully developed during the CMLI project.  
 To accelerate the production of command-line tools, I developed an automatic-programming program srci2src.cpp.  
-This converts a short source code (srci) to full-length source code (src) in the consistent style.  
-It allows me to generate a command-line tool very quickly, starting with a C or C++ function.
+This converts a short source code (srci) into full-length source code (src) having the consistent style.  
+It has allowed me to generate many command-line tools very quickly, after making a C or C++ function.
 This particular program is only intended for use by myself during development.  
 The resulting command-line tools can be used by anyone.  
 
