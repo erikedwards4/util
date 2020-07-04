@@ -3,7 +3,7 @@
 //Declarations
 const valarray<uint8_t> oktypes = {1,2,3,8,9,10,16,17,32,33,64,65,101,102,103};
 const size_t I = 1, O = 1;
-uint32_t y;
+size_t y;
 
 //Description
 string descr;
@@ -23,7 +23,8 @@ struct arg_file  *a_fo = arg_filen("o","ofile","<file>",0,O,"output file (Y)");
 //Checks
 
 //Set output header info
-o1.F = i1.F; o1.T = 33;
+o1.F = i1.F;
+o1.T = (sizeof(size_t)==32) ? 33 : 65;
 o1.R = o1.C = o1.S = o1.H = 1u;
 
 //Other prep

@@ -4,15 +4,15 @@
 //Declarations
 const valarray<uint8_t> oktypes = {1,2,3,8,9,16,17,32,33,64,65,101,102,103};
 const size_t I = 2, O = 1;
-uint32_t h, ho;
-valarray<uint32_t> X2;
+size_t h, ho;
+valarray<size_t> X2;
 
 //Description
 string descr;
 descr += "Gets hyperslices of 4D X using array of hyperslice indices.\n";
 descr += "\n";
 descr += "The 2nd input is I, the file with the hyperslice indices.\n";
-descr += "This must be in binary format with uint32_t data type,\n";
+descr += "This must be in binary format with size_t data type,\n";
 descr += "e.g., echo '0 2 3 7' | txt2bin -f33 > I \n";
 descr += "\n";
 descr += "Examples:\n";
@@ -28,7 +28,7 @@ struct arg_file  *a_fo = arg_filen("o","ofile","<file>",0,O,"output file (Y)");
 //Get options
 
 //Checks
-if (i2.T!=33) { cerr << progstr+": " << __LINE__ << errstr << "input 2 (I) data type must be 33 (uint32_t)" << endl; return 1; }
+if (i2.T!=33) { cerr << progstr+": " << __LINE__ << errstr << "input 2 (I) data type must be 33 (size_t)" << endl; return 1; }
 if (!i2.isvec()) { cerr << progstr+": " << __LINE__ << errstr << "input 2 (I) must be a vector of indices" << endl; return 1; }
 
 //Set output header info

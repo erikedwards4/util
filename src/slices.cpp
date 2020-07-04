@@ -33,8 +33,8 @@ int main(int argc, char *argv[])
     ifstream ifs1, ifs2; ofstream ofs1;
     int8_t stdi1, stdi2, stdo1, wo1;
     ioinfo i1, i2, o1;
-    uint32_t s, so;
-    valarray<uint32_t> X2;
+    size_t s, so;
+    valarray<size_t> X2;
 
 
     //Description
@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
     descr += "Gets slices of X using array of slice indices.\n";
     descr += "\n";
     descr += "The 2nd input is I, the file with the slice indices.\n";
-    descr += "This must be in binary format with uint32_t data type,\n";
+    descr += "This must be in binary format with size_t data type,\n";
     descr += "e.g., echo '0 2 3 7' | txt2bin -f33 > I \n";
     descr += "\n";
     descr += "Examples:\n";
@@ -105,7 +105,7 @@ int main(int argc, char *argv[])
 
 
     //Checks
-    if (i2.T!=33) { cerr << progstr+": " << __LINE__ << errstr << "input 2 (I) data type must be 33 (uint32_t)" << endl; return 1; }
+    if (i2.T!=33) { cerr << progstr+": " << __LINE__ << errstr << "input 2 (I) data type must be 33 (size_t)" << endl; return 1; }
     if (!i2.isvec()) { cerr << progstr+": " << __LINE__ << errstr << "input 2 (I) must be a vector of indices" << endl; return 1; }
 
 

@@ -4,7 +4,7 @@
 //Declarations
 const valarray<uint8_t> oktypes = {8,9,16,17,32,33,64,65};
 const size_t I = 2, O = 1;
-uint32_t ri1, ri2, ci1, ci2, si1, si2, hi1, hi2;
+size_t ri1, ri2, ci1, ci2, si1, si2, hi1, hi2;
 gslice GS1, GS2;
 
 //Description

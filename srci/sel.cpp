@@ -5,9 +5,9 @@
 const valarray<uint8_t> oktypes = {1,2,3,8,9,16,17,32,33,64,65,101,102,103};
 const size_t I = 1, O = 1;
 size_t Lr, Lc, Ls, Lh, Nr, Nc, Ns, Nh, p1, p2;
-uint rbeg, rend, cbeg, cend, sbeg, send, hbeg, hend, cnt;
-uint rstp, cstp, sstp, hstp;
-valarray<uint32_t> Ir, Ic, Is, Ih;
+size_t rbeg, rend, cbeg, cend, sbeg, send, hbeg, hend, cnt;
+size_t rstp, cstp, sstp, hstp;
+valarray<size_t> Ir, Ic, Is, Ih;
 string rowstr, colstr, slicestr, hyperslicestr;
 int s2i;
 
@@ -106,7 +106,7 @@ else
     try { s2i = stoi(rowstr.substr(0,p1)); }
     catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading int from row string" << endl; return 1; }
     if (s2i<0) { cerr << progstr+": " << __LINE__ << errstr << "row nums must be nonnegative" << endl; return 1; }
-    rbeg = uint(s2i);
+    rbeg = size_t(s2i);
     if (rbeg>=i1.R) { cerr << progstr+": " << __LINE__ << errstr << "row nums must be in [0 R-1]" << endl; return 1; }
 }
 if (Nr<2 || p2==p1+1) { rstp = 1; }
@@ -115,7 +115,7 @@ else
     try { s2i = stoi(rowstr.substr(p1+1,p2-p1-1)); }
     catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading int from row string" << endl; return 1; }
     if (s2i<1) { cerr << progstr+": " << __LINE__ << errstr << "row step must be positive" << endl; return 1; }
-    rstp = uint(s2i);
+    rstp = size_t(s2i);
     if (rstp==0) { cerr << progstr+": " << __LINE__ << errstr << "row step cannot equal 0" << endl; return 1; }
 }
 if (Nr==0) { rend = rbeg; }
@@ -130,8 +130,8 @@ else if (Lr-p2>=4 && rowstr.substr(p2+1,3)=="end")
         try { s2i = stoi(rowstr.substr(p2+5,Lr-p2-4)); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading int from row string" << endl; return 1; }
         if (s2i<0) { cerr << progstr+": " << __LINE__ << errstr << "row nums must be nonnegative" << endl; return 1; }
-        if (uint32_t(s2i+1)>i1.R) { cerr << progstr+": " << __LINE__ << errstr << "row end must be nonnegative" << endl; return 1; }
-        rend = i1.R - uint32_t(s2i+1);
+        if (size_t(s2i+1)>i1.R) { cerr << progstr+": " << __LINE__ << errstr << "row end must be nonnegative" << endl; return 1; }
+        rend = i1.R - size_t(s2i+1);
     }
 }
 else
@@ -139,7 +139,7 @@ else
     try { s2i = stoi(rowstr.substr(p2+1,Lr-p2)); }
     catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading int from row string" << endl; return 1; }
     if (s2i<0) { cerr << progstr+": " << __LINE__ << errstr << "row nums must be nonnegative" << endl; return 1; }
-    rend = uint(s2i);
+    rend = size_t(s2i);
 }
 if (rend>=i1.R) { cerr << progstr+": " << __LINE__ << errstr << "row nums must be in [0 R-1]" << endl; return 1; }
 if (rbeg>rend) { cerr << progstr+": " << __LINE__ << errstr << "row start must be <= row end" << endl; return 1; }
@@ -155,7 +155,7 @@ else
     try { s2i = stoi(colstr.substr(0,p1)); }
     catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading int from col string" << endl; return 1; }
     if (s2i<0) { cerr << progstr+": " << __LINE__ << errstr << "col nums must be nonnegative" << endl; return 1; }
-    cbeg = uint(s2i);
+    cbeg = size_t(s2i);
     if (cbeg>=i1.C) { cerr << progstr+": " << __LINE__ << errstr << "col nums must be in [0 C-1]" << endl; return 1; }
 }
 if (Nc<2 || p2==p1+1) { cstp = 1; }
@@ -164,7 +164,7 @@ else
     try { s2i = stoi(colstr.substr(p1+1,p2-p1-1)); }
     catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading int from col string" << endl; return 1; }
     if (s2i<1) { cerr << progstr+": " << __LINE__ << errstr << "col step must be positive" << endl; return 1; }
-    cstp = uint(s2i);
+    cstp = size_t(s2i);
     if (cstp==0) { cerr << progstr+": " << __LINE__ << errstr << "col step cannot equal 0" << endl; return 1; }
 }
 if (Nc==0) { cend = cbeg; }
@@ -179,8 +179,8 @@ else if (Lc-p2>=4 && colstr.substr(p2+1,3)=="end")
         try { s2i = stoi(colstr.substr(p2+5,Lc-p2-4)); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading int from col string" << endl; return 1; }
         if (s2i<0) { cerr << progstr+": " << __LINE__ << errstr << "col nums must be nonnegative" << endl; return 1; }
-        if (uint32_t(s2i+1)>i1.C) { cerr << progstr+": " << __LINE__ << errstr << "col end must be nonnegative" << endl; return 1; }
-        cend = i1.C - uint32_t(s2i+1);
+        if (size_t(s2i+1)>i1.C) { cerr << progstr+": " << __LINE__ << errstr << "col end must be nonnegative" << endl; return 1; }
+        cend = i1.C - size_t(s2i+1);
     }
 }
 else
@@ -188,7 +188,7 @@ else
     try { s2i = stoi(colstr.substr(p2+1,Lc-p2)); }
     catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading int from col string" << endl; return 1; }
     if (s2i<0) { cerr << progstr+": " << __LINE__ << errstr << "col nums must be nonnegative" << endl; return 1; }
-    cend = uint(s2i);
+    cend = size_t(s2i);
 }
 if (cend>=i1.C) { cerr << progstr+": " << __LINE__ << errstr << "col nums must be in [0 C-1]" << endl; return 1; }
 if (cstp>0 && cbeg>cend) { cerr << progstr+": " << __LINE__ << errstr << "col start must be <= col end for positive col step" << endl; return 1; }
@@ -203,7 +203,7 @@ else
     try { s2i = stoi(slicestr.substr(0,p1)); }
     catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading int from slice string" << endl; return 1; }
     if (s2i<0) { cerr << progstr+": " << __LINE__ << errstr << "slice nums must be nonnegative" << endl; return 1; }
-    sbeg = uint(s2i);
+    sbeg = size_t(s2i);
     if (sbeg>=i1.S) { cerr << progstr+": " << __LINE__ << errstr << "slice nums must be in [0 S-1]" << endl; return 1; }
 }
 if (Ns<2 || p2==p1+1) { sstp = 1; }
@@ -212,7 +212,7 @@ else
     try { s2i = stoi(slicestr.substr(p1+1,p2-p1-1)); }
     catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading int from slice string" << endl; return 1; }
     if (s2i<1) { cerr << progstr+": " << __LINE__ << errstr << "slice step must be positive" << endl; return 1; }
-    sstp = uint(s2i);
+    sstp = size_t(s2i);
     if (sstp==0) { cerr << progstr+": " << __LINE__ << errstr << "slice step cannot equal 0" << endl; return 1; }
 }
 if (Ns==0) { send = sbeg; }
@@ -227,8 +227,8 @@ else if (Ls-p2>=4 && slicestr.substr(p2+1,3)=="end")
         try { s2i = stoi(slicestr.substr(p2+5,Ls-p2-4)); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading int from slice string" << endl; return 1; }
         if (s2i<0) { cerr << progstr+": " << __LINE__ << errstr << "slice nums must be nonnegative" << endl; return 1; }
-        if (uint32_t(s2i+1)>i1.S) { cerr << progstr+": " << __LINE__ << errstr << "slice end must be nonnegative" << endl; return 1; }
-        send = i1.S - uint32_t(s2i+1);
+        if (size_t(s2i+1)>i1.S) { cerr << progstr+": " << __LINE__ << errstr << "slice end must be nonnegative" << endl; return 1; }
+        send = i1.S - size_t(s2i+1);
     }
 }
 else
@@ -236,7 +236,7 @@ else
     try { s2i = stoi(slicestr.substr(p2+1,Ls-p2)); }
     catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading int from slice string" << endl; return 1; }
     if (s2i<0) { cerr << progstr+": " << __LINE__ << errstr << "slice nums must be nonnegative" << endl; return 1; }
-    send = uint(s2i);
+    send = size_t(s2i);
 }
 if (send>=i1.S) { cerr << progstr+": " << __LINE__ << errstr << "slice nums must be in [0 S-1]" << endl; return 1; }
 if (sstp>0 && sbeg>send) { cerr << progstr+": " << __LINE__ << errstr << "slice start must be <= slice end for positive slice step" << endl; return 1; }
@@ -251,7 +251,7 @@ else
     try { s2i = stoi(hyperslicestr.substr(0,p1)); }
     catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading int from hyperslice string" << endl; return 1; }
     if (s2i<0) { cerr << progstr+": " << __LINE__ << errstr << "hyperslice nums must be nonnegative" << endl; return 1; }
-    hbeg = uint(s2i);
+    hbeg = size_t(s2i);
     if (hbeg>=i1.H) { cerr << progstr+": " << __LINE__ << errstr << "hyperslice nums must be in [0 H-1]" << endl; return 1; }
 }
 if (Nh<2 || p2==p1+1) { hstp = 1; }
@@ -260,7 +260,7 @@ else
     try { s2i = stoi(hyperslicestr.substr(p1+1,p2-p1-1)); }
     catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading int from hyperslice string" << endl; return 1; }
     if (s2i<1) { cerr << progstr+": " << __LINE__ << errstr << "hyperslice step must be positive" << endl; return 1; }
-    hstp = uint(s2i);
+    hstp = size_t(s2i);
     if (hstp==0) { cerr << progstr+": " << __LINE__ << errstr << "hyperslice step cannot equal 0" << endl; return 1; }
 }
 if (Nh==0) { hend = hbeg; }
@@ -275,8 +275,8 @@ else if (Lh-p2>=4 && hyperslicestr.substr(p2+1,3)=="end")
         try { s2i = stoi(hyperslicestr.substr(p2+5,Lh-p2-4)); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading int from hyperslice string" << endl; return 1; }
         if (s2i<0) { cerr << progstr+": " << __LINE__ << errstr << "slice nums must be nonnegative" << endl; return 1; }
-        if (uint32_t(s2i+1)>i1.H) { cerr << progstr+": " << __LINE__ << errstr << "hyperslice end must be nonnegative" << endl; return 1; }
-        hend = i1.H - uint32_t(s2i+1);
+        if (size_t(s2i+1)>i1.H) { cerr << progstr+": " << __LINE__ << errstr << "hyperslice end must be nonnegative" << endl; return 1; }
+        hend = i1.H - size_t(s2i+1);
     }
 }
 else
@@ -284,7 +284,7 @@ else
     try { s2i = stoi(hyperslicestr.substr(p2+1,Lh-p2)); }
     catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading int from hyperslice string" << endl; return 1; }
     if (s2i<0) { cerr << progstr+": " << __LINE__ << errstr << "hyperslice nums must be nonnegative" << endl; return 1; }
-    hend = uint(s2i);
+    hend = size_t(s2i);
 }
 if (hend>=i1.H) { cerr << progstr+": " << __LINE__ << errstr << "hyperslice nums must be in [0 H-1]" << endl; return 1; }
 if (hstp>0 && hbeg>hend) { cerr << progstr+": " << __LINE__ << errstr << "hyperslice start must be <= hyperslice end for positive hyperslice step" << endl; return 1; }

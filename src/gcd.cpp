@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     ifstream ifs1, ifs2; ofstream ofs1;
     int8_t stdi1, stdi2, stdo1, wo1;
     ioinfo i1, i2, o1;
-    uint32_t ri1, ri2, ci1, ci2, si1, si2, hi1, hi2;
+    size_t ri1, ri2, ci1, ci2, si1, si2, hi1, hi2;
     gslice GS1, GS2;
 
 

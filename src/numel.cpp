@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
     ifstream ifs1; ofstream ofs1;
     int8_t stdi1, stdo1, wo1;
     ioinfo i1, o1;
-    uint32_t y;
+    size_t y;
 
 
     //Description
@@ -93,7 +93,8 @@ int main(int argc, char *argv[])
 
 
     //Set output header info
-    o1.F = i1.F; o1.T = 33;
+    o1.F = i1.F;
+    o1.T = (sizeof(size_t)==32) ? 33 : 65;
     o1.R = o1.C = o1.S = o1.H = 1u;
 
 

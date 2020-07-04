@@ -201,7 +201,7 @@ int main(int argc, char *argv[])
 
 
     //Declare maps
-    //cout << ind << "const unordered_map<uint32_t,size_t> szs = {{0,2},{1,4},{2,8},{3,16},{8,1},{9,1},{10,1},{16,2},{17,2},{32,4},{33,4},{64,8},{65,8},{101,8},{102,16},{103,32}};" << endl;
+    //cout << ind << "const unordered_map<uint32_t,std::streamsize> szs = {{0,2},{1,4},{2,8},{3,16},{8,1},{9,1},{10,1},{16,2},{17,2},{32,4},{33,4},{64,8},{65,8},{101,8},{102,16},{103,32}};" << endl;
 
 
     //Get I and O

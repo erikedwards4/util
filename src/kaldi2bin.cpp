@@ -14,7 +14,7 @@
 #include <vector>
 #include <complex>
 #include <ctime>
-#include "/home/erik/codee/cmli/cmli.hpp"
+#include "/home/erik/codee/util/cmli.hpp"
 
 
 int main(int argc, char *argv[])
@@ -29,12 +29,12 @@ int main(int argc, char *argv[])
 	//const string warstr = ": \033[1;32mwarning:\033[0m ";
     const string progstr(__FILE__,string(__FILE__).find_last_of("/")+1,strlen(__FILE__)-string(__FILE__).find_last_of("/")-5);
 	const valarray<uint8_t> oktypes = {1,2};
-    const unordered_map<uint32_t,size_t> szs = {{0,2},{1,4},{2,8},{3,16},{8,1},{9,1},{10,1},{16,2},{17,2},{32,4},{33,4},{64,8},{65,8},{101,8},{102,16},{103,32}};
+    //const unordered_map<uint32_t,std::streamsize> szs = {{0,2},{1,4},{2,8},{3,16},{8,1},{9,1},{10,1},{16,2},{17,2},{32,4},{33,4},{64,8},{65,8},{101,8},{102,16},{103,32}};
 	const size_t I = 1, O = 1;
 	ifstream ifs1; ofstream ofs1;
     int8_t stdi1, stdo1;
     ioinfo i1, o1;
-	uint32_t r, c, D, N, cnt;
+	size_t r, c, D, N, cnt;
     char tmp;
 
 	
@@ -130,13 +130,13 @@ int main(int argc, char *argv[])
     //Get dim
 	if (a_dim->count==0) { D = 0; }
 	else if (a_dim->ival[0]<0) { cerr << progstr+": " << __LINE__ << errstr << "dim must be a non-negative int" << endl; return 1; }
-	else { D = uint32_t(a_dim->ival[0]); }
+	else { D = size_t(a_dim->ival[0]); }
 
 
     //Get N
 	if (a_N->count==0) { N = 0; }
 	else if (a_N->ival[0]<0) { cerr << progstr+": " << __LINE__ << errstr << "N must be a non-negative int" << endl; return 1; }
-	else { N = uint32_t(a_N->ival[0]); }
+	else { N = size_t(a_N->ival[0]); }
 
 
     //Find BFM string
@@ -195,11 +195,11 @@ int main(int argc, char *argv[])
         valarray<float> Xr(0.0f,o1.C);
         for (r=0u; r<o1.R; r++)
         {
-            try { ifs1.read(reinterpret_cast<char*>(&Xr[0]),i1.sz()*i1.C); }
+            try { ifs1.read(reinterpret_cast<char*>(&Xr[0]),i1.sz()*streamsize(i1.C)); }
             catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading input file at row " << r << endl; return 1; }
             if (r<N)
             {
-                try { ofs1.write(reinterpret_cast<char*>(&Xr[0]),o1.sz()*D); }
+                try { ofs1.write(reinterpret_cast<char*>(&Xr[0]),o1.sz()*streamsize(D)); }
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output file data at row " << r << endl; return 1; }
             }
         }
@@ -209,12 +209,12 @@ int main(int argc, char *argv[])
         valarray<float> Xr(0.0f,o1.C); valarray<double> Yr(0.0,D);
         for (r=0u; r<o1.R; r++)
         {
-            try { ifs1.read(reinterpret_cast<char*>(&Xr[0]),i1.sz()*i1.C); }
+            try { ifs1.read(reinterpret_cast<char*>(&Xr[0]),i1.sz()*streamsize(i1.C)); }
             catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading input file at row " << r << endl; return 1; }
             if (r<N)
             {
                 for (c=0u; c<D; c++) { Yr[c] = double(Xr[c]); }
-                try { ofs1.write(reinterpret_cast<char*>(&Yr[0]),o1.sz()*D); }
+                try { ofs1.write(reinterpret_cast<char*>(&Yr[0]),o1.sz()*streamsize(D)); }
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output file data at row " << r << endl; return 1; }
             }
         }

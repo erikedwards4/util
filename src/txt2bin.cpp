@@ -16,7 +16,7 @@
 #include <vector>
 #include <complex>
 #include <ctime>
-#include "/home/erik/codee/cmli/cmli.hpp"
+#include "/home/erik/codee/util/cmli.hpp"
 
 
 int main(int argc, char *argv[])
@@ -32,12 +32,12 @@ int main(int argc, char *argv[])
     const string progstr(__FILE__,string(__FILE__).find_last_of("/")+1,strlen(__FILE__)-string(__FILE__).find_last_of("/")-5);
 	const valarray<uint8_t> okfmts = {0,1,65,101,102,147,148};
 	const valarray<uint8_t> oktypes = {1,2,3,8,9,16,17,32,33,64,65,101,102,103};
-	const unordered_map<uint32_t,size_t> szs = {{0,2},{1,4},{2,8},{3,16},{8,1},{9,1},{10,1},{16,2},{17,2},{32,4},{33,4},{64,8},{65,8},{101,8},{102,16},{103,32}};
+	//const unordered_map<uint32_t,std::streamsize> szs = {{0,2},{1,4},{2,8},{3,16},{8,1},{9,1},{10,1},{16,2},{17,2},{32,4},{33,4},{64,8},{65,8},{101,8},{102,16},{103,32}};
 	const size_t I = 1, O = 1;
 	ifstream ifs1; ofstream ofs1;
     int8_t stdi1, stdo1;
 	ioinfo o1;
-	uint32_t r, c, s, h;
+	size_t r, c, s, h;
 	size_t p1, p2, cma;
 	int64_t s2i; long double s2ld, s2ldi;
 

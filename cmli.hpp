@@ -6,7 +6,7 @@ class ioinfo
 {
     public:
         uint8_t F = 102, T = 2;
-        uint32_t R = 1u, C = 1u, S = 1u, H = 1u;
+        size_t R = 1u, C = 1u, S = 1u, H = 1u;
         bool only_3D() { return (F==65); }
         bool isrowmajor() { return (F==101 || F==147); }
         bool iscolmajor() { return (F==1 || F==65 || F==80 || F==102 || F==148); }
@@ -26,25 +26,25 @@ class ioinfo
         bool ismat() { return (S==1u && H==1u); }
         bool iscube() { return (H==1u); }
         bool issquare() { return (R==C); }
-        uint32_t N() { return(R*C*S*H); }
-        uint32_t sz()
+        size_t N() { return(R*C*S*H); }
+        std::streamsize sz()
         {
-            if (T==8 || T==9 || T==10) { return 1u; }
-            else if (T==0 || T==16 || T==17) { return 2u; }
-            else if (T==1 || T==32 || T==33 || T==100) { return 4u; }
-            else if (T==2 || T==64 || T==65 || T==101) { return 8u; }
-            else if (T==3 || T==102) { return 16u; }
-            else if (T==103) { return 32u; }
-            else { return 0u; }
+            if (T==8 || T==9 || T==10) { return 1; }
+            else if (T==0 || T==16 || T==17) { return 2; }
+            else if (T==1 || T==32 || T==33 || T==100) { return 4; }
+            else if (T==2 || T==64 || T==65 || T==101) { return 8; }
+            else if (T==3 || T==102) { return 16; }
+            else if (T==103) { return 32; }
+            else { return 0; }
         }
-        uint32_t nbytes()
+        std::streamsize nbytes()
         {
-            if (T==8 || T==9 || T==10) { return R*C*S*H; }
-            else if (T==0 || T==16 || T==17) { return 2u*R*C*S*H; }
-            else if (T==1 || T==32 || T==33 || T==100) { return 4u*R*C*S*H; }
-            else if (T==2 || T==64 || T==65 || T==101) { return 8u*R*C*S*H; }
-            else if (T==3 || T==102) { return 16u*R*C*S*H; }
-            else if (T==103) { return 32u*R*C*S*H; }
+            if (T==8 || T==9 || T==10) { return std::streamsize(R*C*S*H); }
+            else if (T==0 || T==16 || T==17) { return std::streamsize(2u*R*C*S*H); }
+            else if (T==1 || T==32 || T==33 || T==100) { return std::streamsize(4u*R*C*S*H); }
+            else if (T==2 || T==64 || T==65 || T==101) { return std::streamsize(8u*R*C*S*H); }
+            else if (T==3 || T==102) { return std::streamsize(16u*R*C*S*H); }
+            else if (T==103) { return std::streamsize(32u*R*C*S*H); }
             else { return 0u; }
         }
 };
@@ -118,7 +118,7 @@ inline bool read_input_header(std::ifstream &ifs, ioinfo &ii)
         if (D[2]<0 || D[2]>4294967295) { std::cerr << "cmli read_input_header: nslices must be in [0 4294967295]" << std::endl; return false; }
         if (D[3]<0 || D[3]>4294967295) { std::cerr << "cmli read_input_header: nhyperslices must be in [0 4294967295]" << std::endl; return false; }
         //if (D[3]!=1) { std::cerr << "4D tensors not supported for arrayfire" << std::endl; return false; }
-        ii.R = uint32_t(D[0]); ii.C = uint32_t(D[1]); ii.S = uint32_t(D[2]); ii.H = uint32_t(D[3]);
+        ii.R = size_t(D[0]); ii.C = size_t(D[1]); ii.S = size_t(D[2]); ii.H = size_t(D[3]);
     }
     else if (pk==65)   //Armadillo (.arma)
     {
@@ -133,16 +133,16 @@ inline bool read_input_header(std::ifstream &ifs, ioinfo &ii)
         try { getline(ifs,line); } catch (...) { return false; }
         try { s2i = stoi(line,&pos1); } catch (...) { return false; }
         if (s2i<0) { std::cerr << "stoi returned negative int" << std::endl; return false; }
-        ii.R = uint32_t(s2i);
+        ii.R = size_t(s2i);
         try { s2i = stoi(line.substr(pos1),&pos2); } catch (...) { return false; }
         if (s2i<0) { std::cerr << "stoi returned negative int" << std::endl; return false; }
-        ii.C = uint32_t(s2i);
+        ii.C = size_t(s2i);
         if (pos1+pos2>=line.size()) { ii.S = 1u; }
         else
         {
             try { s2i = stoi(line.substr(pos1+pos2)); } catch (...) { return false; }
             if (s2i<0) { std::cerr << "stoi returned negative int" << std::endl; return false; }
-            ii.S = uint32_t(s2i);
+            ii.S = size_t(s2i);
         }
         ii.H = 1u;
     }
@@ -160,10 +160,10 @@ inline bool read_input_header(std::ifstream &ifs, ioinfo &ii)
     {
         try { ifs.read(reinterpret_cast<char*>(&ii.F),sizeof(uint8_t)); } catch (...) { return false; }
         try { ifs.read(reinterpret_cast<char*>(&ii.T),sizeof(uint8_t)); } catch (...) { return false; }
-        try { ifs.read(reinterpret_cast<char*>(&ii.R),sizeof(uint32_t)); } catch (...) { return false; }
-        try { ifs.read(reinterpret_cast<char*>(&ii.C),sizeof(uint32_t)); } catch (...) { return false; }
-        try { ifs.read(reinterpret_cast<char*>(&ii.S),sizeof(uint32_t)); } catch (...) { return false; }
-        try { ifs.read(reinterpret_cast<char*>(&ii.H),sizeof(uint32_t)); } catch (...) { return false; }
+        try { ifs.read(reinterpret_cast<char*>(&ii.R),sizeof(size_t)); } catch (...) { return false; }
+        try { ifs.read(reinterpret_cast<char*>(&ii.C),sizeof(size_t)); } catch (...) { return false; }
+        try { ifs.read(reinterpret_cast<char*>(&ii.S),sizeof(size_t)); } catch (...) { return false; }
+        try { ifs.read(reinterpret_cast<char*>(&ii.H),sizeof(size_t)); } catch (...) { return false; }
     }
     else if (pk==147)   //NumPy (.npy) (will set Fi to 148 if fortran_order found true)
     {
@@ -208,19 +208,19 @@ inline bool read_input_header(std::ifstream &ifs, ioinfo &ii)
             ii.R = ii.C = ii.S = ii.H = 1u;
             try { s2i = stoi(line.substr(pos1,pos2-pos1)); } catch (...) { return false; }
             if (s2i<0) { std::cerr << "stoi returned negative int" << std::endl; return false; }
-            ii.R = uint32_t(s2i);
+            ii.R = size_t(s2i);
             while (pos2==line.find_first_of(",",pos1))
             {
                 d++; pos1 = pos2 + 1;
                 pos2 = line.find_first_of(",)",pos1);
                 try { s2i = stoi(line.substr(pos1,pos2-pos1)); } catch (...) { return false; }
                 if (s2i<0) { std::cerr << "stoi returned negative int" << std::endl; return false; }
-                if (d==1) { ii.C = uint32_t(s2i); }
-                else if (d==2) { ii.S = uint32_t(s2i); }
-                else if (d==3) { ii.H = uint32_t(s2i); }
+                if (d==1) { ii.C = size_t(s2i); }
+                else if (d==2) { ii.S = size_t(s2i); }
+                else if (d==3) { ii.H = size_t(s2i); }
                 else
                 {
-                    nd = uint32_t(s2i);
+                    nd = size_t(s2i);
                     if (nd!=1) { std::cerr << "cmli read_input_header: only 4 dimensions supported" << std::endl; return false; }
                 }
             }
@@ -251,7 +251,7 @@ inline bool write_output_header(std::ofstream &ofs, ioinfo &oi)
         char version = 1, key[1] = {0}, dtype;
         int32_t narrays = 1, keylength = 1;
         int64_t offset = 0;
-        int64_t D[4] = {oi.R,oi.C,oi.S,oi.H};
+        int64_t D[4] = {int64_t(oi.R),int64_t(oi.C),int64_t(oi.S),int64_t(oi.H)};
         try { dtype = typs.at(oi.T); } catch (...) { std::cerr << "cmli write_output_header: data type not recognized or not supported for arrayfire" << std::endl; return false; }
         try { ofs.write(&version,sizeof(char)); } catch (...) { return false; }
         try { ofs.write(reinterpret_cast<char*>(&narrays),sizeof(int32_t)); } catch (...) { return false; }
@@ -280,10 +280,10 @@ inline bool write_output_header(std::ofstream &ofs, ioinfo &oi)
     {
         try { ofs.write(reinterpret_cast<char*>(&oi.F),sizeof(uint8_t)); } catch (...) { return false; }
         try { ofs.write(reinterpret_cast<char*>(&oi.T),sizeof(uint8_t)); } catch (...) { return false; }
-        try { ofs.write(reinterpret_cast<char*>(&oi.R),sizeof(uint32_t)); } catch (...) { return false; }
-        try { ofs.write(reinterpret_cast<char*>(&oi.C),sizeof(uint32_t)); } catch (...) { return false; }
-        try { ofs.write(reinterpret_cast<char*>(&oi.S),sizeof(uint32_t)); } catch (...) { return false; }
-        try { ofs.write(reinterpret_cast<char*>(&oi.H),sizeof(uint32_t)); } catch (...) { return false; }
+        try { ofs.write(reinterpret_cast<char*>(&oi.R),sizeof(size_t)); } catch (...) { return false; }
+        try { ofs.write(reinterpret_cast<char*>(&oi.C),sizeof(size_t)); } catch (...) { return false; }
+        try { ofs.write(reinterpret_cast<char*>(&oi.S),sizeof(size_t)); } catch (...) { return false; }
+        try { ofs.write(reinterpret_cast<char*>(&oi.H),sizeof(size_t)); } catch (...) { return false; }
     }
     else if (oi.F==147 || oi.F==148)  //NumPy (.npy)
     {

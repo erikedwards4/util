@@ -2,15 +2,13 @@
 
 util: basic utility functions
 
-Erik Edwards (erik.edwards4@gmail.com)
-
 ================================================
 
 Command-line tools in C++ for conversion, selection, and basic info.  
 These util functions support all data types and up to 4-D tensors.  
 
 This also has the header file cmli.cpp that is used for all of my command-line tools.  
-This is from my previous general project "command-line libraries" (CMLI), which was to  
+This is from my previous general project "command-line libraries" (CMLI), whose purpose was to  
 allow command-line use and intercommunication between NumPy and various C++ numerical libraries.  
 
 Input/output is supported for NumPy tensors (https://numpy.org/), and several C++ tensor formats:  
