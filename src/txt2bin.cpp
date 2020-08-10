@@ -72,8 +72,8 @@ int main(int argc, char *argv[])
 	//Argtable
 	int nerrs;
 	struct arg_file  *a_fi = arg_filen(nullptr,nullptr,"<file>",I-1,I,"input file");
-	struct arg_int *a_otyp = arg_intn("t","type","<uint>",0,1,"output data type [default=2]");
-	struct arg_int *a_ofmt = arg_intn("f","fmt","<uint>",0,1,"output file format [default=102]");
+	struct arg_int *a_otyp = arg_intn("t","type","<uint>",0,1,"output data type [default=1]");
+	struct arg_int *a_ofmt = arg_intn("f","fmt","<uint>",0,1,"output file format [default=147]");
 	struct arg_file  *a_fo = arg_filen("o","ofile","<file>",0,O,"output file");
 	struct arg_lit *a_help = arg_litn("h","help",0,1,"display this help and exit");
 	struct arg_end  *a_end = arg_end(5);
@@ -104,7 +104,7 @@ int main(int argc, char *argv[])
 
 
 	//Get o1.F
-	if (a_ofmt->count==0) { o1.F = 102; }
+	if (a_ofmt->count==0) { o1.F = 147; }
 	else if (a_ofmt->ival[0]<0) { cerr << progstr+": " << __LINE__ << errstr << "output file format must be nonnegative" << endl; return 1; }
 	else if (a_ofmt->ival[0]>255) { cerr << progstr+": " << __LINE__ << errstr << "output file format must be < 256" << endl; return 1; }
 	else { o1.F = uint8_t(a_ofmt->ival[0]); }
@@ -117,7 +117,7 @@ int main(int argc, char *argv[])
 	
 	
 	//Get o1.T
-	if (a_otyp->count==0) { o1.T = 2; }
+	if (a_otyp->count==0) { o1.T = 1; }
 	else if (a_otyp->ival[0]<1) { cerr << progstr+": " << __LINE__ << errstr << "output data type must be positive" << endl; return 1; }
 	else if (a_otyp->ival[0]>103) { cerr << progstr+": " << __LINE__ << errstr << "output data type must be <= 103" << endl; return 1; }
 	else { o1.T = uint8_t(a_otyp->ival[0]); }

@@ -213,8 +213,12 @@ inline bool read_input_header(std::ifstream &ifs, ioinfo &ii)
             {
                 d++; pos1 = pos2 + 1;
                 pos2 = line.find_first_of(",)",pos1);
-                try { s2i = stoi(line.substr(pos1,pos2-pos1)); } catch (...) { return false; }
-                if (s2i<0) { std::cerr << "stoi returned negative int" << std::endl; return false; }
+                if (line.substr(pos1,pos2-pos1).size()==0) { s2i = 1u; }
+                else
+                {
+                    try { s2i = stoi(line.substr(pos1,pos2-pos1)); } catch (...) { return false; }
+                    if (s2i<0) { std::cerr << "stoi returned negative int" << std::endl; return false; }
+                }
                 if (d==1) { ii.C = size_t(s2i); }
                 else if (d==2) { ii.S = size_t(s2i); }
                 else if (d==3) { ii.H = size_t(s2i); }
@@ -296,14 +300,14 @@ inline bool write_output_header(std::ofstream &ofs, ioinfo &oi)
         catch (...) { std::cerr << "cmli write_output_header: data type not recognized or not supported for numpy" << std::endl; return false; }
         if (oi.F==147) { hdrline += typ + "', 'fortran_order': False, 'shape': ("; }
         else { hdrline += typ + "', 'fortran_order': True, 'shape': ("; }
-        hdrline += to_string(oi.R) + "," + to_string(oi.C);
-        if (oi.H>1u) { hdrline += "," + to_string(oi.S) +"," + to_string(oi.H); }
-        else if (oi.S>1u) { hdrline += "," + to_string(oi.S); }
+        hdrline += to_string(oi.R) + ", " + to_string(oi.C);
+        if (oi.H>1u) { hdrline += ", " + to_string(oi.S) + ", " + to_string(oi.H); }
+        else if (oi.S>1u) { hdrline += ", " + to_string(oi.S); }
         hdrline += "), }";
         HDR_LEN = uint16_t(hdrline.size());
-        while (hdrline.size()%64!=54) { hdrline += " "; HDR_LEN++; }
+        while (hdrline.size()%64!=53) { hdrline += " "; HDR_LEN++; }
+        hdrline += "\n"; HDR_LEN++;
         //std::cerr << "HDR_LEN = " << HDR_LEN << std::endl;
-        hdrline += "\n";
         try { ofs.write(mstr,6); } catch (...) { return false; }
         try { ofs.write(vstr,2); } catch (...) { return false; }
         try { ofs.write(reinterpret_cast<char*>(&HDR_LEN),sizeof(uint16_t)); } catch (...) { return false; }
@@ -312,7 +316,7 @@ inline bool write_output_header(std::ofstream &ofs, ioinfo &oi)
     else
     {
         std::cerr << "cmli write_output_header: output header format not recognized. " << std::endl;
-        std::cerr << "current supported formats are: 0 (raw binary), 1 (af), 65 (arma), 101 (std row-major), 102 (std col-major), 147 (npy row-major), 148 (npy col-major)" << std::endl; return false;
+        std::cerr << "current supported formats are: 0 (raw binary), 1 (afire), 65 (arma), 101 (gen row-major), 102 (gen col-major), 147 (npy row-major), 148 (npy col-major)" << std::endl; return false;
     }
     
     if (!ofs) { return false; }

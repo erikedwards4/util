@@ -2,6 +2,7 @@
 b2b
 b2t
 t2b
+*.npy
 *.a
 *.so
 *.o
