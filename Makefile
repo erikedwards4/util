@@ -11,6 +11,8 @@ SHELL=/bin/bash
 ss=bin/srci2src
 CC=clang++
 
+test -d obj || mkdir -p obj
+
 ifeq ($(CC),clang++)
 	STD=-std=c++17
 	WFLAG=-Weverything -Wno-c++98-compat -Wno-padded -Wno-old-style-cast -Wno-gnu-imaginary-constant
@@ -21,7 +23,6 @@ endif
 
 CFLAGS=$(WFLAG) $(STD) -O3 -march=native -Ic
 
-mkdir -p obj
 
 All: all
 all: CLI_gen Convert Select Info Classify Numeric Shift Clean
