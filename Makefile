@@ -19,7 +19,8 @@ else
 	WFLAG=-Wall -Wextra
 endif
 
-CFLAGS=$(WFLAG) $(STD) -O3 -march=native -Ic
+INCLS=-Ic -I../util
+CFLAGS=$(WFLAG) $(STD) -O3 -march=native $(INCLS)
 
 
 All: all
