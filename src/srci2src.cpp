@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
     string line;
     size_t pos1, pos2;
     //const vector<string> includes = {"<iostream>","<fstream>","<unistd.h>","<string>","<cstring>","<valarray>","<complex>","<unordered_map>","<argtable2.h>","\"/home/erik/codee/util/cmli.hpp\""};
-    const vector<string> includes = {"<iostream>","<fstream>","<unistd.h>","<string>","<cstring>","<valarray>","<unordered_map>","<argtable2.h>","\"/home/erik/codee/util/cmli.hpp\""};
+    const vector<string> includes = {"<iostream>","<fstream>","<unistd.h>","<string>","<cstring>","<valarray>","<unordered_map>","<argtable2.h>","\"../util/cmli.hpp\""};
 
 	const string ind = "    ";
     size_t i, I, Imin, o, O, Omin, t, T, a, A = 0;

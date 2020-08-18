@@ -9,7 +9,6 @@
 
 SHELL=/bin/bash
 ss=bin/srci2src
-Dirs!=mkdir -pm 777 bin obj
 CC=clang++
 
 ifeq ($(CC),clang++)
@@ -24,7 +23,10 @@ CFLAGS=$(WFLAG) $(STD) -O3 -march=native -Ic
 
 
 All: all
-all: CLI_gen Convert Select Info Classify Numeric Shift Clean
+all: Dirs CLI_gen Convert Select Info Classify Numeric Shift Clean
+
+Dirs:
+	mkdir -pm 777 bin obj
 
 
 #CLI_gen: for generating command-line programs, i.e. converting from shorter srci files to full src files

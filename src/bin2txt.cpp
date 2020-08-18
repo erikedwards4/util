@@ -10,8 +10,8 @@
 #include <valarray>
 #include <unordered_map>
 #include <argtable2.h>
-#include "/home/erik/codee/util/cmli.hpp"
 #include <complex>
+#include "../util/cmli.hpp"
 
 #ifdef I
 #undef I
