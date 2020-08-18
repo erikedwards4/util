@@ -14,7 +14,7 @@
 #include <vector>
 #include <complex>
 #include <ctime>
-#include "/home/erik/codee/util/cmli.hpp"
+#include "../util/cmli.hpp"
 
 
 int main(int argc, char *argv[])
