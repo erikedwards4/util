@@ -1,5 +1,5 @@
 #@author Erik Edwards
-#@date 2019-2020
+#@date 2018-present
 
 #util is my own library of utility functions in C++.
 #This is the makefile for the command-line tools in C++.
@@ -8,9 +8,7 @@
 #These are functions written in pure C++ and that generally support all data types.
 
 SHELL=/bin/bash
-
 ss=bin/srci2src
-
 CC=clang++
 
 ifeq ($(CC),clang++)
@@ -21,10 +19,13 @@ else
 	WFLAG=-Wall -Wextra
 endif
 
-CFLAGS=$(WFLAG) -O3 $(STD) -march=native -Ic
+CFLAGS=$(WFLAG) $(STD) -O3 -march=native -Ic
 
+mkdir -p obj
 
-all: CLI_gen Convert Select Info Classify Numeric Shift
+All: all
+all: CLI_gen Convert Select Info Classify Numeric Shift Clean
+
 
 #CLI_gen: for generating command-line programs, i.e. converting from shorter srci files to full src files
 CLI_gen: srci2src
@@ -154,6 +155,8 @@ vec: srci/vec.cpp
 	$(ss) srci/$@.cpp > src/$@.cpp; $(CC) -c src/$@.cpp -oobj/$@.o $(CFLAGS); $(CC) obj/$@.o -obin/$@ -largtable2
 
 
+#make clean
+Clean: clean
 clean:
 	find ./obj -type f -name *.o | xargs rm -f
 	rm -f 7 X* Y*

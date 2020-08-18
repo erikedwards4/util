@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
     
     //Initial comments
     cout << "//@author Erik Edwards" << endl;
-    cout << "//@date 2019-2020" << endl;
+    cout << "//@date 2019-present" << endl;
     getline(ifs,line);
     while (line.size()>0 && line.compare(0,9,"//Include")!=0) { cout << line << endl; getline(ifs,line); }
     cout << endl;
