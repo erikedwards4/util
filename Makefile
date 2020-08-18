@@ -9,9 +9,8 @@
 
 SHELL=/bin/bash
 ss=bin/srci2src
+Dirs!=mkdir -pm 777 bin obj
 CC=clang++
-
-test -d obj || mkdir -p obj
 
 ifeq ($(CC),clang++)
 	STD=-std=c++17
