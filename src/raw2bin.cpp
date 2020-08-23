@@ -1,5 +1,6 @@
 //@author Erik Edwards
-//@date 2019-2020
+//@date 2018-present
+//@license BSD 3-clause
 
 
 #include <iostream>
@@ -28,8 +29,8 @@ int main(int argc, char *argv[])
     const string errstr = ": \033[1;31merror:\033[0m ";
     const string warstr = ": \033[1;35mwarning:\033[0m ";
     const string progstr(__FILE__,string(__FILE__).find_last_of("/")+1,strlen(__FILE__)-string(__FILE__).find_last_of("/")-5);
-    const valarray<uint8_t> oktypes = {1,2,8,9,16,17,32,33,64,65,101,102};
-    const size_t I = 1, O = 1;
+    const valarray<size_t> oktypes = {1u,2u,8u,9u,16u,17u,32u,33u,64u,65u,101u,102u};
+    const size_t I = 1u, O = 1u;
     ifstream ifs1; ofstream ofs1;
     int8_t stdi1, stdo1, wo1;
     ioinfo i1, o1;
@@ -102,15 +103,15 @@ int main(int argc, char *argv[])
     //Get options
 
     //Get o1.F
-    if (a_ofmt->count==0) { o1.F = 147; }
+    if (a_ofmt->count==0) { o1.F = 147u; }
     else if (a_ofmt->ival[0]<0) { cerr << progstr+": " << __LINE__ << errstr << "output file format must be nonnegative" << endl; return 1; }
     else if (a_ofmt->ival[0]>255) { cerr << progstr+": " << __LINE__ << errstr << "output file format must be < 256" << endl; return 1; }
-    else { o1.F = uint8_t(a_ofmt->ival[0]); }
+    else { o1.F = size_t(a_ofmt->ival[0]); }
 
     //Get o1.T
-    if (a_otyp->count==0) { o1.T = 1; }
+    if (a_otyp->count==0) { o1.T = 1u; }
     else if (a_otyp->ival[0]<1) { cerr << progstr+": " << __LINE__ << errstr << "data type must be positive int" << endl; return 1; }
-    else { o1.T = uint8_t(a_otyp->ival[0]); }
+    else { o1.T = size_t(a_otyp->ival[0]); }
     if ((o1.T==oktypes).sum()==0)
     {
         cerr << progstr+": " << __LINE__ << errstr << "output data type must be in " << "{";
@@ -159,13 +160,13 @@ int main(int argc, char *argv[])
 
 
     //Other prep
-    i1.F = 0; i1.T = o1.T;
+    i1.F = 0u; i1.T = o1.T;
     i1.R = o1.N();
     i1.C = i1.S = i1.H = 1u;
     
 
     //Process
-    if (o1.T==1)
+    if (o1.T==1u)
     {
         float *X;
         try { X = new float[i1.N()]; }
@@ -179,7 +180,7 @@ int main(int argc, char *argv[])
         }
         delete[] X;
     }
-    else if (o1.T==2)
+    else if (o1.T==2u)
     {
         double *X;
         try { X = new double[i1.N()]; }
@@ -193,7 +194,7 @@ int main(int argc, char *argv[])
         }
         delete[] X;
     }
-    else if (o1.T==8)
+    else if (o1.T==8u)
     {
         int8_t *X;
         try { X = new int8_t[i1.N()]; }
@@ -207,7 +208,7 @@ int main(int argc, char *argv[])
         }
         delete[] X;
     }
-    else if (o1.T==9)
+    else if (o1.T==9u)
     {
         uint8_t *X;
         try { X = new uint8_t[i1.N()]; }
@@ -221,7 +222,7 @@ int main(int argc, char *argv[])
         }
         delete[] X;
     }
-    else if (o1.T==16)
+    else if (o1.T==16u)
     {
         int16_t *X;
         try { X = new int16_t[i1.N()]; }
@@ -235,7 +236,7 @@ int main(int argc, char *argv[])
         }
         delete[] X;
     }
-    else if (o1.T==17)
+    else if (o1.T==17u)
     {
         uint16_t *X;
         try { X = new uint16_t[i1.N()]; }
@@ -249,7 +250,7 @@ int main(int argc, char *argv[])
         }
         delete[] X;
     }
-    else if (o1.T==32)
+    else if (o1.T==32u)
     {
         int32_t *X;
         try { X = new int32_t[i1.N()]; }
@@ -263,7 +264,7 @@ int main(int argc, char *argv[])
         }
         delete[] X;
     }
-    else if (o1.T==33)
+    else if (o1.T==33u)
     {
         uint32_t *X;
         try { X = new uint32_t[i1.N()]; }
@@ -277,7 +278,7 @@ int main(int argc, char *argv[])
         }
         delete[] X;
     }
-    else if (o1.T==64)
+    else if (o1.T==64u)
     {
         int64_t *X;
         try { X = new int64_t[i1.N()]; }
@@ -291,7 +292,7 @@ int main(int argc, char *argv[])
         }
         delete[] X;
     }
-    else if (o1.T==65)
+    else if (o1.T==65u)
     {
         uint64_t *X;
         try { X = new uint64_t[i1.N()]; }
@@ -305,7 +306,7 @@ int main(int argc, char *argv[])
         }
         delete[] X;
     }
-    else if (o1.T==101)
+    else if (o1.T==101u)
     {
         complex<float> *X;
         try { X = new complex<float>[i1.N()]; }
@@ -319,7 +320,7 @@ int main(int argc, char *argv[])
         }
         delete[] X;
     }
-    else if (o1.T==102)
+    else if (o1.T==102u)
     {
         complex<double> *X;
         try { X = new complex<double>[i1.N()]; }

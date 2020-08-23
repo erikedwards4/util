@@ -1,5 +1,6 @@
 //@author Erik Edwards
-//@date 2019
+//@date 2018-present
+//@license BSD 3-clause
 
 
 #include <iostream>
@@ -30,10 +31,10 @@ int main(int argc, char *argv[])
 	const string errstr = ": \033[1;31merror:\033[0m ";
 	//const string warstr = ": \033[1;32mwarning:\033[0m ";
     const string progstr(__FILE__,string(__FILE__).find_last_of("/")+1,strlen(__FILE__)-string(__FILE__).find_last_of("/")-5);
-	const valarray<uint8_t> okfmts = {0,1,65,101,102,147,148};
-	const valarray<uint8_t> oktypes = {1,2,3,8,9,16,17,32,33,64,65,101,102,103};
-	//const unordered_map<uint32_t,std::streamsize> szs = {{0,2},{1,4},{2,8},{3,16},{8,1},{9,1},{10,1},{16,2},{17,2},{32,4},{33,4},{64,8},{65,8},{101,8},{102,16},{103,32}};
-	const size_t I = 1, O = 1;
+	const valarray<size_t> okfmts = {0u,1u,65u,101u,102u,147u,148u};
+	const valarray<size_t> oktypes = {1u,2u,3u,8u,9u,16u,17u,32u,33u,64u,65u,101u,102u,103u};
+	//const unordered_map<size_t,std::streamsize> szs = {{0,2},{1,4},{2,8},{3,16},{8,1},{9,1},{10,1},{16,2},{17,2},{32,4},{33,4},{64,8},{65,8},{101,8},{102,16},{103,32}};
+	const size_t I = 1u, O = 1u;
 	ifstream ifs1; ofstream ofs1;
     int8_t stdi1, stdo1;
 	ioinfo o1;
@@ -104,10 +105,10 @@ int main(int argc, char *argv[])
 
 
 	//Get o1.F
-	if (a_ofmt->count==0) { o1.F = 147; }
+	if (a_ofmt->count==0) { o1.F = 147u; }
 	else if (a_ofmt->ival[0]<0) { cerr << progstr+": " << __LINE__ << errstr << "output file format must be nonnegative" << endl; return 1; }
 	else if (a_ofmt->ival[0]>255) { cerr << progstr+": " << __LINE__ << errstr << "output file format must be < 256" << endl; return 1; }
-	else { o1.F = uint8_t(a_ofmt->ival[0]); }
+	else { o1.F = size_t(a_ofmt->ival[0]); }
 	if ((o1.F==okfmts).sum()==0)
 	{
 		cerr << progstr+": " << __LINE__ << errstr << "output file format must be in " << "{";
@@ -117,10 +118,10 @@ int main(int argc, char *argv[])
 	
 	
 	//Get o1.T
-	if (a_otyp->count==0) { o1.T = 1; }
+	if (a_otyp->count==0) { o1.T = 1u; }
 	else if (a_otyp->ival[0]<1) { cerr << progstr+": " << __LINE__ << errstr << "output data type must be positive" << endl; return 1; }
 	else if (a_otyp->ival[0]>103) { cerr << progstr+": " << __LINE__ << errstr << "output data type must be <= 103" << endl; return 1; }
-	else { o1.T = uint8_t(a_otyp->ival[0]); }
+	else { o1.T = size_t(a_otyp->ival[0]); }
 	if ((o1.T==oktypes).sum()==0)
     {
         cerr << progstr+": " << __LINE__ << errstr << "input data type must be in " << "{";
@@ -142,7 +143,7 @@ int main(int argc, char *argv[])
 			case 1:
 				while (!iss1.eof())
 				{
-					iss1 >> field1; o1.C++;
+					iss1 >> field1; ++o1.C;
 					try { s2ld = stold(field1); }
 					catch (...) { cerr << progstr+": " << __LINE__ << errstr << "could not convert str to num at row " << o1.R << endl; return 1; }
 					if (s2ld<-static_cast<long double>(FLT_MAX) || s2ld>static_cast<long double>(FLT_MAX)) { cerr << progstr+": " << __LINE__ << errstr << "num is out of range for data type 1 (float) at row " << o1.R << endl; return 1; }
@@ -152,7 +153,7 @@ int main(int argc, char *argv[])
 			case 2:
 				while (!iss1.eof())
 				{
-					iss1 >> field1; o1.C++;
+					iss1 >> field1; ++o1.C;
 					try { s2ld = stold(field1); }
 					catch (...) { cerr << progstr+": " << __LINE__ << errstr << "could not convert str to num at row " << o1.R << endl; return 1; }
 					if (s2ld<-static_cast<long double>(DBL_MAX) || s2ld>static_cast<long double>(DBL_MAX)) { cerr << progstr+": " << __LINE__ << errstr << "num is out of range for data type 2 (double) at row " << o1.R << endl; return 1; }
@@ -162,7 +163,7 @@ int main(int argc, char *argv[])
 			case 3:
 				while (!iss1.eof())
 				{
-					iss1 >> field1; o1.C++;
+					iss1 >> field1; ++o1.C;
 					try { s2ld = stold(field1); }
 					catch (...) { cerr << progstr+": " << __LINE__ << errstr << "could not convert str to num at row " << o1.R << endl; return 1; }
 					X3.push_back(s2ld);
@@ -171,7 +172,7 @@ int main(int argc, char *argv[])
 			case 8:
 				while (!iss1.eof())
 				{
-					iss1 >> field1; o1.C++;
+					iss1 >> field1; ++o1.C;
 					try { s2i = stoll(field1); }
 					catch (...) { cerr << progstr+": " << __LINE__ << errstr << "could not convert str to int at row " << o1.R << endl; return 1; }
 					if (s2i<INT8_MIN || s2i>INT8_MAX) { cerr << progstr+": " << __LINE__ << errstr << "int is out of range for data type 8 (int8_t) at row " << o1.R << endl; return 1; }
@@ -181,7 +182,7 @@ int main(int argc, char *argv[])
 			case 9:
 				while (!iss1.eof())
 				{
-					iss1 >> field1; o1.C++;
+					iss1 >> field1; ++o1.C;
 					try { s2i = stoll(field1); }
 					catch (...) { cerr << progstr+": " << __LINE__ << errstr << "could not convert str to int at row " << o1.R << endl; return 1; }
 					if (s2i<0 || s2i>UINT8_MAX) { cerr << progstr+": " << __LINE__ << errstr << "int is out of range for data type 9 (uint8_t) at row " << o1.R << endl; return 1; }
@@ -191,7 +192,7 @@ int main(int argc, char *argv[])
 			case 16:
 				while (!iss1.eof())
 				{
-					iss1 >> field1; o1.C++;
+					iss1 >> field1; ++o1.C;
 					try { s2i = stoll(field1); }
 					catch (...) { cerr << progstr+": " << __LINE__ << errstr << "could not convert str to int at row " << o1.R << endl; return 1; }
 					if (s2i<INT16_MIN || s2i>INT16_MAX) { cerr << progstr+": " << __LINE__ << errstr << "int is out of range for data type 16 (int16_t) at row " << o1.R << endl; return 1; }
@@ -201,7 +202,7 @@ int main(int argc, char *argv[])
 			case 17:
 				while (!iss1.eof())
 				{
-					iss1 >> field1; o1.C++;
+					iss1 >> field1; ++o1.C;
 					try { s2i = stoll(field1); }
 					catch (...) { cerr << progstr+": " << __LINE__ << errstr << "could not convert str to int at row " << o1.R << endl; return 1; }
 					if (s2i<0 || s2i>UINT16_MAX) { cerr << progstr+": " << __LINE__ << errstr << "int is out of range for data type 17 (uint16_t) at row " << o1.R << endl; return 1; }
@@ -211,7 +212,7 @@ int main(int argc, char *argv[])
 			case 32:
 				while (!iss1.eof())
 				{
-					iss1 >> field1; o1.C++;
+					iss1 >> field1; ++o1.C;
 					try { s2i = stoll(field1); }
 					catch (...) { cerr << progstr+": " << __LINE__ << errstr << "could not convert str to int at row " << o1.R << endl; return 1; }
 					if (s2i<INT32_MIN || s2i>INT32_MAX) { cerr << progstr+": " << __LINE__ << errstr << "int is out of range for data type 32 (int32_t) at row " << o1.R << endl; return 1; }
@@ -221,7 +222,7 @@ int main(int argc, char *argv[])
 			case 33:
 				while (!iss1.eof())
 				{
-					iss1 >> field1; o1.C++;
+					iss1 >> field1; ++o1.C;
 					try { s2i = stoll(field1); }
 					catch (...) { cerr << progstr+": " << __LINE__ << errstr << "could not convert str to int at row " << o1.R << endl; return 1; }
 					if (s2i<0 || s2i>UINT32_MAX) { cerr << progstr+": " << __LINE__ << errstr << "int is out of range for data type 33 (uint32_t) at row " << o1.R << endl; return 1; }
@@ -231,7 +232,7 @@ int main(int argc, char *argv[])
 			case 64:
 				while (!iss1.eof())
 				{
-					iss1 >> field1; o1.C++;
+					iss1 >> field1; ++o1.C;
 					try { X64.push_back(stoll(field1)); }
 					catch (...) { cerr << progstr+": " << __LINE__ << errstr << "could not convert str to int at row " << o1.R << endl; return 1; }
 				}
@@ -239,7 +240,7 @@ int main(int argc, char *argv[])
 			case 65:
 				while (!iss1.eof())
 				{
-					iss1 >> field1; o1.C++;
+					iss1 >> field1; ++o1.C;
 					try { X65.push_back(stoull(field1)); }
 					catch (...) { cerr << progstr+": " << __LINE__ << errstr << "could not convert str to int at row " << o1.R << endl; return 1; }
 				}
@@ -247,7 +248,7 @@ int main(int argc, char *argv[])
 			case 101:
 				while (!iss1.eof())
 				{
-					iss1 >> field1; o1.C++;
+					iss1 >> field1; ++o1.C;
 					p1 = field1.find("("); p2 = field1.rfind(")"); cma = field1.find(",");
 					if (p1>field1.length() || p2>field1.length() || cma>field1.length())
 					{
@@ -265,7 +266,7 @@ int main(int argc, char *argv[])
 			case 102:
 				while (!iss1.eof())
 				{
-					iss1 >> field1; o1.C++;
+					iss1 >> field1; ++o1.C;
 					p1 = field1.find("("); p2 = field1.rfind(")"); cma = field1.find(",");
 					if (p1>field1.length() || p2>field1.length() || cma>field1.length())
 					{
@@ -283,7 +284,7 @@ int main(int argc, char *argv[])
 			case 103:
 				while (!iss1.eof())
 				{
-					iss1 >> field1; o1.C++;
+					iss1 >> field1; ++o1.C;
 					p1 = field1.find("("); p2 = field1.rfind(")"); cma = field1.find(",");
 					if (p1>field1.length() || p2>field1.length() || cma>field1.length())
 					{
@@ -318,7 +319,7 @@ int main(int argc, char *argv[])
 			case 1:
 				while (!iss1.eof())
 				{
-					iss1 >> field1; c++;
+					iss1 >> field1; ++c;
 					try { s2ld = stold(field1); }
 					catch (...) { cerr << progstr+": " << __LINE__ << errstr << "could not convert str to num at row " << o1.R << endl; return 1; }
 					if (s2ld<-static_cast<long double>(FLT_MAX) || s2ld>static_cast<long double>(FLT_MAX)) { cerr << progstr+": " << __LINE__ << errstr << "num is out of range for data type 1 (float) at row " << o1.R << endl; return 1; }
@@ -328,7 +329,7 @@ int main(int argc, char *argv[])
 			case 2:
 				while (!iss1.eof())
 				{
-					iss1 >> field1; c++;
+					iss1 >> field1; ++c;
 					try { s2ld = stold(field1); }
 					catch (...) { cerr << progstr+": " << __LINE__ << errstr << "could not convert str to num at row " << o1.R << endl; return 1; }
 					if (s2ld<-static_cast<long double>(DBL_MAX) || s2ld>static_cast<long double>(DBL_MAX)) { cerr << progstr+": " << __LINE__ << errstr << "num is out of range for data type 2 (double) at row " << o1.R << endl; return 1; }
@@ -338,7 +339,7 @@ int main(int argc, char *argv[])
 			case 3:
 				while (!iss1.eof())
 				{
-					iss1 >> field1; c++;
+					iss1 >> field1; ++c;
 					try { s2ld = stold(field1); }
 					catch (...) { cerr << progstr+": " << __LINE__ << errstr << "could not convert str to num at row " << o1.R << endl; return 1; }
 					X3.push_back(s2ld);
@@ -347,7 +348,7 @@ int main(int argc, char *argv[])
 			case 8:
 				while (!iss1.eof())
 				{
-					iss1 >> field1; c++;
+					iss1 >> field1; ++c;
 					try { s2i = stoll(field1); }
 					catch (...) { cerr << progstr+": " << __LINE__ << errstr << "could not convert str to int at row " << o1.R << endl; return 1; }
 					if (s2i<INT8_MIN || s2i>INT8_MAX) { cerr << progstr+": " << __LINE__ << errstr << "int is out of range for data type 8 (int8_t) at row " << o1.R << endl; return 1; }
@@ -357,7 +358,7 @@ int main(int argc, char *argv[])
 			case 9:
 				while (!iss1.eof())
 				{
-					iss1 >> field1; c++;
+					iss1 >> field1; ++c;
 					try { s2i = stoll(field1); }
 					catch (...) { cerr << progstr+": " << __LINE__ << errstr << "could not convert str to int at row " << o1.R << endl; return 1; }
 					if (s2i<0 || s2i>UINT8_MAX) { cerr << progstr+": " << __LINE__ << errstr << "int is out of range for data type 9 (uint8_t) at row " << o1.R << endl; return 1; }
@@ -367,7 +368,7 @@ int main(int argc, char *argv[])
 			case 16:
 				while (!iss1.eof())
 				{
-					iss1 >> field1; c++;
+					iss1 >> field1; ++c;
 					try { s2i = stoll(field1); }
 					catch (...) { cerr << progstr+": " << __LINE__ << errstr << "could not convert str to int at row " << o1.R << endl; return 1; }
 					if (s2i<INT16_MIN || s2i>INT16_MAX) { cerr << progstr+": " << __LINE__ << errstr << "int is out of range for data type 16 (int16_t) at row " << o1.R << endl; return 1; }
@@ -377,7 +378,7 @@ int main(int argc, char *argv[])
 			case 17:
 				while (!iss1.eof())
 				{
-					iss1 >> field1; c++;
+					iss1 >> field1; ++c;
 					try { s2i = stoll(field1); }
 					catch (...) { cerr << progstr+": " << __LINE__ << errstr << "could not convert str to int at row " << o1.R << endl; return 1; }
 					if (s2i<0 || s2i>UINT16_MAX) { cerr << progstr+": " << __LINE__ << errstr << "int is out of range for data type 17 (uint16_t) at row " << o1.R << endl; return 1; }
@@ -387,7 +388,7 @@ int main(int argc, char *argv[])
 			case 32:
 				while (!iss1.eof())
 				{
-					iss1 >> field1; c++;
+					iss1 >> field1; ++c;
 					try { s2i = stoll(field1); }
 					catch (...) { cerr << progstr+": " << __LINE__ << errstr << "could not convert str to int at row " << o1.R << endl; return 1; }
 					if (s2i<INT32_MIN || s2i>INT32_MAX) { cerr << progstr+": " << __LINE__ << errstr << "int is out of range for data type 32 (int32_t) at row " << o1.R << endl; return 1; }
@@ -397,7 +398,7 @@ int main(int argc, char *argv[])
 			case 33:
 				while (!iss1.eof())
 				{
-					iss1 >> field1; c++;
+					iss1 >> field1; ++c;
 					try { s2i = stoll(field1); }
 					catch (...) { cerr << progstr+": " << __LINE__ << errstr << "could not convert str to int at row " << o1.R << endl; return 1; }
 					if (s2i<0 || s2i>UINT32_MAX) { cerr << progstr+": " << __LINE__ << errstr << "int is out of range for data type 33 (uint32_t) at row " << o1.R << endl; return 1; }
@@ -409,7 +410,7 @@ int main(int argc, char *argv[])
 			case 64:
 				while (!iss1.eof())
 				{
-					iss1 >> field1; c++;
+					iss1 >> field1; ++c;
 					try { X64.push_back(stoll(field1)); }
 					catch (...) { cerr << progstr+": " << __LINE__ << errstr << "could not convert str to int at row " << o1.R << endl; return 1; }
 				}
@@ -417,7 +418,7 @@ int main(int argc, char *argv[])
 			case 65:
 				while (!iss1.eof())
 				{
-					iss1 >> field1; c++;
+					iss1 >> field1; ++c;
 					try { X65.push_back(stoull(field1)); }
 					catch (...) { cerr << progstr+": " << __LINE__ << errstr << "could not convert str to int at row " << o1.R << endl; return 1; }
 				}
@@ -425,7 +426,7 @@ int main(int argc, char *argv[])
 			case 101:
 				while (!iss1.eof())
 				{
-					iss1 >> field1; c++;
+					iss1 >> field1; ++c;
 					p1 = field1.find("("); p2 = field1.rfind(")"); cma = field1.find(",");
 					if (p1>field1.length() || p2>field1.length() || cma>field1.length())
 					{
@@ -443,7 +444,7 @@ int main(int argc, char *argv[])
 			case 102:
 				while (!iss1.eof())
 				{
-					iss1 >> field1; c++;
+					iss1 >> field1; ++c;
 					p1 = field1.find("("); p2 = field1.rfind(")"); cma = field1.find(",");
 					if (p1>field1.length() || p2>field1.length() || cma>field1.length())
 					{
@@ -461,7 +462,7 @@ int main(int argc, char *argv[])
 			case 103:
 				while (!iss1.eof())
 				{
-					iss1 >> field1; c++;
+					iss1 >> field1; ++c;
 					p1 = field1.find("("); p2 = field1.rfind(")"); cma = field1.find(",");
 					if (p1>field1.length() || p2>field1.length() || cma>field1.length())
 					{

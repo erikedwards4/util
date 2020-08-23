@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
     const string warstr = ": \033[1;35mwarning:\033[0m ";
     const string progstr(__FILE__,string(__FILE__).find_last_of("/")+1,strlen(__FILE__)-string(__FILE__).find_last_of("/")-5);
     const valarray<uint8_t> oktypes = {1,2,3,8,9,10,16,17,32,33,64,65,101,102,103};
-    const size_t I = 1, O = 1;
+    const size_t I = 1u, O = 1u;
     ifstream ifs1; ofstream ofs1;
     int8_t stdi1, stdo1, wo1;
     ioinfo i1, o1;

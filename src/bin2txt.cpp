@@ -1,5 +1,6 @@
 //@author Erik Edwards
-//@date 2019-2020
+//@date 2018-present
+//@license BSD 3-clause
 
 
 #include <iostream>
@@ -10,8 +11,8 @@
 #include <valarray>
 #include <unordered_map>
 #include <argtable2.h>
-#include <complex>
 #include "../util/cmli.hpp"
+#include <complex>
 
 #ifdef I
 #undef I
@@ -28,12 +29,12 @@ int main(int argc, char *argv[])
     const string errstr = ": \033[1;31merror:\033[0m ";
     const string warstr = ": \033[1;35mwarning:\033[0m ";
     const string progstr(__FILE__,string(__FILE__).find_last_of("/")+1,strlen(__FILE__)-string(__FILE__).find_last_of("/")-5);
-    const valarray<uint8_t> oktypes = {1,2,3,8,9,10,16,17,32,33,64,65,101,102,103};
-    const size_t I = 1;
+    const valarray<size_t> oktypes = {1u,2u,3u,8u,9u,10u,16u,17u,32u,33u,64u,65u,101u,102u,103u};
+    const size_t I = 1u;
     ifstream ifs1; ofstream ofs1;
     int8_t stdi1, stdo1, wo1;
     ioinfo i1;
-    size_t r, c, s, h, n;
+    size_t n;
     string delim;
 
 
@@ -87,7 +88,7 @@ int main(int argc, char *argv[])
     if ((i1.T==oktypes).sum()==0)
     {
         cerr << progstr+": " << __LINE__ << errstr << "input data type must be in " << "{";
-        for (auto o : oktypes) { cerr << int(o) << ((o==oktypes[oktypes.size()-1]) ? "}" : ","); }
+        for (auto o : oktypes) { cerr << int(o) << ((o==oktypes[oktypes.size()-1u]) ? "}" : ","); }
         cerr << endl; return 1;
     }
 
@@ -115,27 +116,27 @@ int main(int argc, char *argv[])
 
 
     //Process
-    if (i1.T==1)
+    if (i1.T==1u)
     {
         valarray<float> X(i1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file" << endl; return 1; }
-        for (h=0u; h<i1.H; h++)
+        for (size_t h=0u; h<i1.H; ++h)
         {
             if (i1.H>1u) { if (h>0u) { ofs1 << endl; } ofs1 << "hypercube hyperslice " << h << ":" << endl; }
             if (!ofs1) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at hyperslice " << h << endl; return 1; }
-            for (s=0u; s<i1.S; s++)
+            for (size_t s=0u; s<i1.S; ++s)
             {
                 if (i1.S>1u) { if (s>0u) { ofs1 << endl; } ofs1 << "cube slice " << s << ":" << endl; }
                 if (!ofs1) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at slice " << s << endl; return 1; }
-                for (r=0u; r<i1.R; r++)
+                for (size_t r=0u; r<i1.R; ++r)
                 {
                     if (i1.C>0u)
                     {
                         n = (i1.iscolmajor()) ? r + s*i1.R*i1.C + h*i1.R*i1.C*i1.S : h + s*i1.H + r*i1.C*i1.S*i1.H;
                         try { ofs1 << X[n]; }
                         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at row " << r << endl; return 1; }
-                        for (c=1u; c<i1.C; c++)
+                        for (size_t c=1u; c<i1.C; ++c)
                         {
                             n = (i1.iscolmajor()) ? r + c*i1.R + s*i1.R*i1.C + h*i1.R*i1.C*i1.S : h + s*i1.H + c*i1.S*i1.H + r*i1.C*i1.S*i1.H;
                             try { ofs1 << delim << X[n]; }
@@ -153,22 +154,22 @@ int main(int argc, char *argv[])
         valarray<double> X(i1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file" << endl; return 1; }
-        for (h=0u; h<i1.H; h++)
+        for (size_t h=0u; h<i1.H; ++h)
         {
             if (i1.H>1u) { if (h>0u) { ofs1 << endl; } ofs1 << "hypercube hyperslice " << h << ":" << endl; }
             if (!ofs1) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at hyperslice " << h << endl; return 1; }
-            for (s=0u; s<i1.S; s++)
+            for (size_t s=0u; s<i1.S; ++s)
             {
                 if (i1.S>1u) { if (s>0u) { ofs1 << endl; } ofs1 << "cube slice " << s << ":" << endl; }
                 if (!ofs1) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at slice " << s << endl; return 1; }
-                for (r=0u; r<i1.R; r++)
+                for (size_t r=0u; r<i1.R; ++r)
                 {
                     if (i1.C>0u)
                     {
                         n = (i1.iscolmajor()) ? r + s*i1.R*i1.C + h*i1.R*i1.C*i1.S : h + s*i1.H + r*i1.C*i1.S*i1.H;
                         try { ofs1 << X[n]; }
                         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at row " << r << endl; return 1; }
-                        for (c=1u; c<i1.C; c++)
+                        for (size_t c=1u; c<i1.C; ++c)
                         {
                             n = (i1.iscolmajor()) ? r + c*i1.R + s*i1.R*i1.C + h*i1.R*i1.C*i1.S : h + s*i1.H + c*i1.S*i1.H + r*i1.C*i1.S*i1.H;
                             try { ofs1 << delim << X[n]; }
@@ -186,22 +187,22 @@ int main(int argc, char *argv[])
         valarray<long double> X(i1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file" << endl; return 1; }
-        for (h=0u; h<i1.H; h++)
+        for (size_t h=0u; h<i1.H; ++h)
         {
             if (i1.H>1u) { if (h>0u) { ofs1 << endl; } ofs1 << "hypercube hyperslice " << h << ":" << endl; }
             if (!ofs1) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at hyperslice " << h << endl; return 1; }
-            for (s=0u; s<i1.S; s++)
+            for (size_t s=0u; s<i1.S; ++s)
             {
                 if (i1.S>1u) { if (s>0u) { ofs1 << endl; } ofs1 << "cube slice " << s << ":" << endl; }
                 if (!ofs1) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at slice " << s << endl; return 1; }
-                for (r=0u; r<i1.R; r++)
+                for (size_t r=0u; r<i1.R; ++r)
                 {
                     if (i1.C>0u)
                     {
                         n = (i1.iscolmajor()) ? r + s*i1.R*i1.C + h*i1.R*i1.C*i1.S : h + s*i1.H + r*i1.C*i1.S*i1.H;
                         try { ofs1 << X[n]; }
                         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at row " << r << endl; return 1; }
-                        for (c=1u; c<i1.C; c++)
+                        for (size_t c=1u; c<i1.C; ++c)
                         {
                             n = (i1.iscolmajor()) ? r + c*i1.R + s*i1.R*i1.C + h*i1.R*i1.C*i1.S : h + s*i1.H + c*i1.S*i1.H + r*i1.C*i1.S*i1.H;
                             try { ofs1 << delim << X[n]; }
@@ -214,20 +215,20 @@ int main(int argc, char *argv[])
             }
         }
     }
-    else if (i1.T==8)
+    else if (i1.T==8u)
     {
         valarray<int8_t> X(i1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file" << endl; return 1; }
-        for (h=0u; h<i1.H; h++)
+        for (size_t h=0u; h<i1.H; ++h)
         {
             if (i1.H>1u) { if (h>0u) { ofs1 << endl; } ofs1 << "hypercube hyperslice " << h << ":" << endl; }
             if (!ofs1) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at hyperslice " << h << endl; return 1; }
-            for (s=0u; s<i1.S; s++)
+            for (size_t s=0u; s<i1.S; ++s)
             {
                 if (i1.S>1u) { if (s>0u) { ofs1 << endl; } ofs1 << "cube slice " << s << ":" << endl; }
                 if (!ofs1) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at slice " << s << endl; return 1; }
-                for (r=0u; r<i1.R; r++)
+                for (size_t r=0u; r<i1.R; ++r)
                 {
                     if (i1.C>0u)
                     {
@@ -242,7 +243,7 @@ int main(int argc, char *argv[])
                             try { ofs1 << X[n]; }
                             catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at row " << r << endl; return 1; }
                         }
-                        for (c=1u; c<i1.C; c++)
+                        for (size_t c=1u; c<i1.C; ++c)
                         {
                             n = (i1.iscolmajor()) ? r + c*i1.R + s*i1.R*i1.C + h*i1.R*i1.C*i1.S : h + s*i1.H + c*i1.S*i1.H + r*i1.C*i1.S*i1.H;
                             if (i1.T<16)
@@ -263,20 +264,20 @@ int main(int argc, char *argv[])
             }
         }
     }
-    else if (i1.T==9)
+    else if (i1.T==9u)
     {
         valarray<uint8_t> X(i1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file" << endl; return 1; }
-        for (h=0u; h<i1.H; h++)
+        for (size_t h=0u; h<i1.H; ++h)
         {
             if (i1.H>1u) { if (h>0u) { ofs1 << endl; } ofs1 << "hypercube hyperslice " << h << ":" << endl; }
             if (!ofs1) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at hyperslice " << h << endl; return 1; }
-            for (s=0u; s<i1.S; s++)
+            for (size_t s=0u; s<i1.S; ++s)
             {
                 if (i1.S>1u) { if (s>0u) { ofs1 << endl; } ofs1 << "cube slice " << s << ":" << endl; }
                 if (!ofs1) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at slice " << s << endl; return 1; }
-                for (r=0u; r<i1.R; r++)
+                for (size_t r=0u; r<i1.R; ++r)
                 {
                     if (i1.C>0u)
                     {
@@ -291,7 +292,7 @@ int main(int argc, char *argv[])
                             try { ofs1 << X[n]; }
                             catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at row " << r << endl; return 1; }
                         }
-                        for (c=1u; c<i1.C; c++)
+                        for (size_t c=1u; c<i1.C; ++c)
                         {
                             n = (i1.iscolmajor()) ? r + c*i1.R + s*i1.R*i1.C + h*i1.R*i1.C*i1.S : h + s*i1.H + c*i1.S*i1.H + r*i1.C*i1.S*i1.H;
                             if (i1.T<16)
@@ -312,20 +313,20 @@ int main(int argc, char *argv[])
             }
         }
     }
-    else if (i1.T==10)
+    else if (i1.T==10u)
     {
         valarray<bool> X(i1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file" << endl; return 1; }
-        for (h=0u; h<i1.H; h++)
+        for (size_t h=0u; h<i1.H; ++h)
         {
             if (i1.H>1u) { if (h>0u) { ofs1 << endl; } ofs1 << "hypercube hyperslice " << h << ":" << endl; }
             if (!ofs1) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at hyperslice " << h << endl; return 1; }
-            for (s=0u; s<i1.S; s++)
+            for (size_t s=0u; s<i1.S; ++s)
             {
                 if (i1.S>1u) { if (s>0u) { ofs1 << endl; } ofs1 << "cube slice " << s << ":" << endl; }
                 if (!ofs1) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at slice " << s << endl; return 1; }
-                for (r=0u; r<i1.R; r++)
+                for (size_t r=0u; r<i1.R; ++r)
                 {
                     if (i1.C>0u)
                     {
@@ -340,7 +341,7 @@ int main(int argc, char *argv[])
                             try { ofs1 << X[n]; }
                             catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at row " << r << endl; return 1; }
                         }
-                        for (c=1u; c<i1.C; c++)
+                        for (size_t c=1u; c<i1.C; ++c)
                         {
                             n = (i1.iscolmajor()) ? r + c*i1.R + s*i1.R*i1.C + h*i1.R*i1.C*i1.S : h + s*i1.H + c*i1.S*i1.H + r*i1.C*i1.S*i1.H;
                             if (i1.T<16)
@@ -361,20 +362,20 @@ int main(int argc, char *argv[])
             }
         }
     }
-    else if (i1.T==16)
+    else if (i1.T==16u)
     {
         valarray<int16_t> X(i1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file" << endl; return 1; }
-        for (h=0u; h<i1.H; h++)
+        for (size_t h=0u; h<i1.H; ++h)
         {
             if (i1.H>1u) { if (h>0u) { ofs1 << endl; } ofs1 << "hypercube hyperslice " << h << ":" << endl; }
             if (!ofs1) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at hyperslice " << h << endl; return 1; }
-            for (s=0u; s<i1.S; s++)
+            for (size_t s=0u; s<i1.S; ++s)
             {
                 if (i1.S>1u) { if (s>0u) { ofs1 << endl; } ofs1 << "cube slice " << s << ":" << endl; }
                 if (!ofs1) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at slice " << s << endl; return 1; }
-                for (r=0u; r<i1.R; r++)
+                for (size_t r=0u; r<i1.R; ++r)
                 {
                     if (i1.C>0u)
                     {
@@ -389,7 +390,7 @@ int main(int argc, char *argv[])
                             try { ofs1 << X[n]; }
                             catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at row " << r << endl; return 1; }
                         }
-                        for (c=1u; c<i1.C; c++)
+                        for (size_t c=1u; c<i1.C; ++c)
                         {
                             n = (i1.iscolmajor()) ? r + c*i1.R + s*i1.R*i1.C + h*i1.R*i1.C*i1.S : h + s*i1.H + c*i1.S*i1.H + r*i1.C*i1.S*i1.H;
                             if (i1.T<16)
@@ -410,20 +411,20 @@ int main(int argc, char *argv[])
             }
         }
     }
-    else if (i1.T==17)
+    else if (i1.T==17u)
     {
         valarray<uint16_t> X(i1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file" << endl; return 1; }
-        for (h=0u; h<i1.H; h++)
+        for (size_t h=0u; h<i1.H; ++h)
         {
             if (i1.H>1u) { if (h>0u) { ofs1 << endl; } ofs1 << "hypercube hyperslice " << h << ":" << endl; }
             if (!ofs1) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at hyperslice " << h << endl; return 1; }
-            for (s=0u; s<i1.S; s++)
+            for (size_t s=0u; s<i1.S; ++s)
             {
                 if (i1.S>1u) { if (s>0u) { ofs1 << endl; } ofs1 << "cube slice " << s << ":" << endl; }
                 if (!ofs1) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at slice " << s << endl; return 1; }
-                for (r=0u; r<i1.R; r++)
+                for (size_t r=0u; r<i1.R; ++r)
                 {
                     if (i1.C>0u)
                     {
@@ -438,7 +439,7 @@ int main(int argc, char *argv[])
                             try { ofs1 << X[n]; }
                             catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at row " << r << endl; return 1; }
                         }
-                        for (c=1u; c<i1.C; c++)
+                        for (size_t c=1u; c<i1.C; ++c)
                         {
                             n = (i1.iscolmajor()) ? r + c*i1.R + s*i1.R*i1.C + h*i1.R*i1.C*i1.S : h + s*i1.H + c*i1.S*i1.H + r*i1.C*i1.S*i1.H;
                             if (i1.T<16)
@@ -459,20 +460,20 @@ int main(int argc, char *argv[])
             }
         }
     }
-    else if (i1.T==32)
+    else if (i1.T==32u)
     {
         valarray<int32_t> X(i1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file" << endl; return 1; }
-        for (h=0u; h<i1.H; h++)
+        for (size_t h=0u; h<i1.H; ++h)
         {
             if (i1.H>1u) { if (h>0u) { ofs1 << endl; } ofs1 << "hypercube hyperslice " << h << ":" << endl; }
             if (!ofs1) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at hyperslice " << h << endl; return 1; }
-            for (s=0u; s<i1.S; s++)
+            for (size_t s=0u; s<i1.S; ++s)
             {
                 if (i1.S>1u) { if (s>0u) { ofs1 << endl; } ofs1 << "cube slice " << s << ":" << endl; }
                 if (!ofs1) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at slice " << s << endl; return 1; }
-                for (r=0u; r<i1.R; r++)
+                for (size_t r=0u; r<i1.R; ++r)
                 {
                     if (i1.C>0u)
                     {
@@ -487,7 +488,7 @@ int main(int argc, char *argv[])
                             try { ofs1 << X[n]; }
                             catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at row " << r << endl; return 1; }
                         }
-                        for (c=1u; c<i1.C; c++)
+                        for (size_t c=1u; c<i1.C; ++c)
                         {
                             n = (i1.iscolmajor()) ? r + c*i1.R + s*i1.R*i1.C + h*i1.R*i1.C*i1.S : h + s*i1.H + c*i1.S*i1.H + r*i1.C*i1.S*i1.H;
                             if (i1.T<16)
@@ -508,20 +509,20 @@ int main(int argc, char *argv[])
             }
         }
     }
-    else if (i1.T==33)
+    else if (i1.T==33u)
     {
         valarray<uint32_t> X(i1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file" << endl; return 1; }
-        for (h=0u; h<i1.H; h++)
+        for (size_t h=0u; h<i1.H; ++h)
         {
             if (i1.H>1u) { if (h>0u) { ofs1 << endl; } ofs1 << "hypercube hyperslice " << h << ":" << endl; }
             if (!ofs1) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at hyperslice " << h << endl; return 1; }
-            for (s=0u; s<i1.S; s++)
+            for (size_t s=0u; s<i1.S; ++s)
             {
                 if (i1.S>1u) { if (s>0u) { ofs1 << endl; } ofs1 << "cube slice " << s << ":" << endl; }
                 if (!ofs1) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at slice " << s << endl; return 1; }
-                for (r=0u; r<i1.R; r++)
+                for (size_t r=0u; r<i1.R; ++r)
                 {
                     if (i1.C>0u)
                     {
@@ -536,7 +537,7 @@ int main(int argc, char *argv[])
                             try { ofs1 << X[n]; }
                             catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at row " << r << endl; return 1; }
                         }
-                        for (c=1u; c<i1.C; c++)
+                        for (size_t c=1u; c<i1.C; ++c)
                         {
                             n = (i1.iscolmajor()) ? r + c*i1.R + s*i1.R*i1.C + h*i1.R*i1.C*i1.S : h + s*i1.H + c*i1.S*i1.H + r*i1.C*i1.S*i1.H;
                             if (i1.T<16)
@@ -557,20 +558,20 @@ int main(int argc, char *argv[])
             }
         }
     }
-    else if (i1.T==64)
+    else if (i1.T==64u)
     {
         valarray<int64_t> X(i1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file" << endl; return 1; }
-        for (h=0u; h<i1.H; h++)
+        for (size_t h=0u; h<i1.H; ++h)
         {
             if (i1.H>1u) { if (h>0u) { ofs1 << endl; } ofs1 << "hypercube hyperslice " << h << ":" << endl; }
             if (!ofs1) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at hyperslice " << h << endl; return 1; }
-            for (s=0u; s<i1.S; s++)
+            for (size_t s=0u; s<i1.S; ++s)
             {
                 if (i1.S>1u) { if (s>0u) { ofs1 << endl; } ofs1 << "cube slice " << s << ":" << endl; }
                 if (!ofs1) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at slice " << s << endl; return 1; }
-                for (r=0u; r<i1.R; r++)
+                for (size_t r=0u; r<i1.R; ++r)
                 {
                     if (i1.C>0u)
                     {
@@ -585,7 +586,7 @@ int main(int argc, char *argv[])
                             try { ofs1 << X[n]; }
                             catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at row " << r << endl; return 1; }
                         }
-                        for (c=1u; c<i1.C; c++)
+                        for (size_t c=1u; c<i1.C; ++c)
                         {
                             n = (i1.iscolmajor()) ? r + c*i1.R + s*i1.R*i1.C + h*i1.R*i1.C*i1.S : h + s*i1.H + c*i1.S*i1.H + r*i1.C*i1.S*i1.H;
                             if (i1.T<16)
@@ -606,20 +607,20 @@ int main(int argc, char *argv[])
             }
         }
     }
-    else if (i1.T==65)
+    else if (i1.T==65u)
     {
         valarray<uint64_t> X(i1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file" << endl; return 1; }
-        for (h=0u; h<i1.H; h++)
+        for (size_t h=0u; h<i1.H; ++h)
         {
             if (i1.H>1u) { if (h>0u) { ofs1 << endl; } ofs1 << "hypercube hyperslice " << h << ":" << endl; }
             if (!ofs1) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at hyperslice " << h << endl; return 1; }
-            for (s=0u; s<i1.S; s++)
+            for (size_t s=0u; s<i1.S; ++s)
             {
                 if (i1.S>1u) { if (s>0u) { ofs1 << endl; } ofs1 << "cube slice " << s << ":" << endl; }
                 if (!ofs1) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at slice " << s << endl; return 1; }
-                for (r=0u; r<i1.R; r++)
+                for (size_t r=0u; r<i1.R; ++r)
                 {
                     if (i1.C>0u)
                     {
@@ -634,7 +635,7 @@ int main(int argc, char *argv[])
                             try { ofs1 << X[n]; }
                             catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at row " << r << endl; return 1; }
                         }
-                        for (c=1u; c<i1.C; c++)
+                        for (size_t c=1u; c<i1.C; ++c)
                         {
                             n = (i1.iscolmajor()) ? r + c*i1.R + s*i1.R*i1.C + h*i1.R*i1.C*i1.S : h + s*i1.H + c*i1.S*i1.H + r*i1.C*i1.S*i1.H;
                             if (i1.T<16)
@@ -655,27 +656,27 @@ int main(int argc, char *argv[])
             }
         }
     }
-    else if (i1.T==101)
+    else if (i1.T==101u)
     {
         valarray<complex<float>> X(i1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file" << endl; return 1; }
-        for (h=0u; h<i1.H; h++)
+        for (size_t h=0u; h<i1.H; ++h)
         {
             if (i1.H>1u) { if (h>0u) { ofs1 << endl; } ofs1 << "hypercube hyperslice " << h << ":" << endl; }
             if (!ofs1) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at hyperslice " << h << endl; return 1; }
-            for (s=0u; s<i1.S; s++)
+            for (size_t s=0u; s<i1.S; ++s)
             {
                 if (i1.S>1u) { if (s>0u) { ofs1 << endl; } ofs1 << "cube slice " << s << ":" << endl; }
                 if (!ofs1) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at slice " << s << endl; return 1; }
-                for (r=0u; r<i1.R; r++)
+                for (size_t r=0u; r<i1.R; ++r)
                 {
                     if (i1.C>0u)
                     {
                         n = (i1.iscolmajor()) ? r + s*i1.R*i1.C + h*i1.R*i1.C*i1.S : h + s*i1.H + r*i1.C*i1.S*i1.H;
                         try { ofs1 << X[n]; }
                         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at row " << r << endl; return 1; }
-                        for (c=1u; c<i1.C; c++)
+                        for (size_t c=1u; c<i1.C; ++c)
                         {
                             n = (i1.iscolmajor()) ? r + c*i1.R + s*i1.R*i1.C + h*i1.R*i1.C*i1.S : h + s*i1.H + c*i1.S*i1.H + r*i1.C*i1.S*i1.H;
                             try { ofs1 << delim << X[n]; }
@@ -688,27 +689,27 @@ int main(int argc, char *argv[])
             }
         }
     }
-    else if (i1.T==102)
+    else if (i1.T==102u)
     {
         valarray<complex<double>> X(i1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file" << endl; return 1; }
-        for (h=0u; h<i1.H; h++)
+        for (size_t h=0u; h<i1.H; ++h)
         {
             if (i1.H>1u) { if (h>0u) { ofs1 << endl; } ofs1 << "hypercube hyperslice " << h << ":" << endl; }
             if (!ofs1) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at hyperslice " << h << endl; return 1; }
-            for (s=0u; s<i1.S; s++)
+            for (size_t s=0u; s<i1.S; ++s)
             {
                 if (i1.S>1u) { if (s>0u) { ofs1 << endl; } ofs1 << "cube slice " << s << ":" << endl; }
                 if (!ofs1) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at slice " << s << endl; return 1; }
-                for (r=0u; r<i1.R; r++)
+                for (size_t r=0u; r<i1.R; ++r)
                 {
                     if (i1.C>0u)
                     {
                         n = (i1.iscolmajor()) ? r + s*i1.R*i1.C + h*i1.R*i1.C*i1.S : h + s*i1.H + r*i1.C*i1.S*i1.H;
                         try { ofs1 << X[n]; }
                         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at row " << r << endl; return 1; }
-                        for (c=1u; c<i1.C; c++)
+                        for (size_t c=1u; c<i1.C; ++c)
                         {
                             n = (i1.iscolmajor()) ? r + c*i1.R + s*i1.R*i1.C + h*i1.R*i1.C*i1.S : h + s*i1.H + c*i1.S*i1.H + r*i1.C*i1.S*i1.H;
                             try { ofs1 << delim << X[n]; }
@@ -721,27 +722,27 @@ int main(int argc, char *argv[])
             }
         }
     }
-    else if (i1.T==103)
+    else if (i1.T==103u)
     {
         valarray<complex<long double>> X(i1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file" << endl; return 1; }
-        for (h=0u; h<i1.H; h++)
+        for (size_t h=0u; h<i1.H; ++h)
         {
             if (i1.H>1u) { if (h>0u) { ofs1 << endl; } ofs1 << "hypercube hyperslice " << h << ":" << endl; }
             if (!ofs1) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at hyperslice " << h << endl; return 1; }
-            for (s=0u; s<i1.S; s++)
+            for (size_t s=0u; s<i1.S; ++s)
             {
                 if (i1.S>1u) { if (s>0u) { ofs1 << endl; } ofs1 << "cube slice " << s << ":" << endl; }
                 if (!ofs1) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at slice " << s << endl; return 1; }
-                for (r=0u; r<i1.R; r++)
+                for (size_t r=0u; r<i1.R; ++r)
                 {
                     if (i1.C>0u)
                     {
                         n = (i1.iscolmajor()) ? r + s*i1.R*i1.C + h*i1.R*i1.C*i1.S : h + s*i1.H + r*i1.C*i1.S*i1.H;
                         try { ofs1 << X[n]; }
                         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output at row " << r << endl; return 1; }
-                        for (c=1u; c<i1.C; c++)
+                        for (size_t c=1u; c<i1.C; ++c)
                         {
                             n = (i1.iscolmajor()) ? r + c*i1.R + s*i1.R*i1.C + h*i1.R*i1.C*i1.S : h + s*i1.H + c*i1.S*i1.H + r*i1.C*i1.S*i1.H;
                             try { ofs1 << delim << X[n]; }

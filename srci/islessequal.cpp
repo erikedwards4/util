@@ -3,8 +3,8 @@
 #include <complex>
 
 //Declarations
-const valarray<uint8_t> oktypes = {1,2,3,8,9,16,17,32,33,64,65,101,102,103};
-const size_t I = 2, O = 1;
+const valarray<size_t> oktypes = {1u,2u,3u,8u,9u,16u,17u,32u,33u,64u,65u,101u,102u,103u};
+const size_t I = 2u, O = 1u;
 size_t ri1, ri2, ci1, ci2, si1, si2, hi1, hi2;
 gslice GS1, GS2;
 
@@ -38,7 +38,7 @@ if (i2.T!=i1.T) { cerr << progstr+": " << __LINE__ << errstr << "inputs must hav
 if (!bcast_compat(i1,i2)) { cerr << progstr+": " << __LINE__ << errstr << "inputs must have same size or broadcast-compatible sizes" << endl; return 1; }
 
 //Set output header
-o1.F = i1.F; o1.T = 8;
+o1.F = i1.F; o1.T = 10u;
 o1.R = (i1.R>i2.R) ? i1.R : i2.R;
 o1.C = (i1.C>i2.C) ? i1.C : i2.C;
 o1.S = (i1.S>i2.S) ? i1.S : i2.S;
@@ -63,7 +63,7 @@ else
 }
 
 //Process
-if (i1.T==1)
+if (i1.T==1u)
 {
     valarray<float> X1(i1.N()), X2(i2.N()); valarray<int8_t> Y(o1.N());
     try { ifs1.read(reinterpret_cast<char*>(&X1[0]),i1.nbytes()); }
@@ -81,7 +81,7 @@ if (i1.T==1)
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output file (Y)" << endl; return 1; }
     }
 }
-else if (i1.T==101)
+else if (i1.T==101u)
 {
     valarray<complex<float>> X1(i1.N()), X2(i2.N()); valarray<int8_t> Y(o1.N());
     try { ifs1.read(reinterpret_cast<char*>(&X1[0]),i1.nbytes()); }

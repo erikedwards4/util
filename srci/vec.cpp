@@ -2,8 +2,8 @@
 #include <complex>
 
 //Declarations
-const valarray<uint8_t> oktypes = {1,2,3,8,9,16,17,32,33,64,65,101,102,103};
-const size_t I = 1, O = 1;
+const valarray<size_t> oktypes = {1u,2u,3u,8u,9u,16u,17u,32u,33u,64u,65u,101u,102u,103u};
+const size_t I = 1u, O = 1u;
 size_t dim;
 
 //Description
@@ -32,10 +32,10 @@ struct arg_file  *a_fo = arg_filen("o","ofile","<file>",0,O,"output file (Y)");
 //Get options
 
 //Get dim
-if (a_d->count==0) { dim = 0; }
+if (a_d->count==0) { dim = 0u; }
 else if (a_d->ival[0]<0) { cerr << progstr+": " << __LINE__ << errstr << "dim must be nonnegative" << endl; return 1; }
 else { dim = size_t(a_d->ival[0]); }
-if (dim>3) { cerr << progstr+": " << __LINE__ << errstr << "dim must be in {0,1,2,3}" << endl; return 1; }
+if (dim>3) { cerr << progstr+": " << __LINE__ << errstr << "dim must be in {0,1u,2u,3u}" << endl; return 1; }
 
 //Checks
 
@@ -49,7 +49,7 @@ o1.H = (dim==3) ? i1.N() : 1u;
 //Other prep
 
 //Process
-if (i1.T==1)
+if (i1.T==1u)
 {
     float *X;
     try { X = new float[i1.N()]; }

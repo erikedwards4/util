@@ -1,8 +1,8 @@
 //Includes
 
 //Declarations
-const valarray<uint8_t> oktypes = {1,2,3,8,9,10,16,17,32,33,64,65,101,102,103};
-const size_t I = 1, O = 1;
+const valarray<size_t> oktypes = {1u,2u,3u,8u,9u,10u,16u,17u,32u,33u,64u,65u,101u,102u,103u};
+const size_t I = 1u, O = 1u;
 bool y;
 
 //Description
@@ -23,20 +23,20 @@ struct arg_file  *a_fo = arg_filen("o","ofile","<file>",0,O,"output file (Y)");
 //Checks
 
 //Set output header info
-o1.F = i1.F; o1.T = 10;
+o1.F = i1.F; o1.T = 10u;
 o1.R = o1.C = o1.S = o1.H = 1u;
 
 //Other prep
 y = i1.iscube();
 
 //Process
-if (i1.T==1)
+if (i1.T==1u)
 {
 }
-else if (i1.T==8)
+else if (i1.T==8u)
 {
 }
-else if (i1.T==101)
+else if (i1.T==101u)
 {
 }
 

@@ -1,5 +1,6 @@
 //@author Erik Edwards
-//@date 2019-2020
+//@date 2018-present
+//@license BSD 3-clause
 
 
 #include <iostream>
@@ -10,7 +11,7 @@
 #include <valarray>
 #include <unordered_map>
 #include <argtable2.h>
-#include "/home/erik/codee/util/cmli.hpp"
+#include "../util/cmli.hpp"
 #include <complex>
 
 #ifdef I
@@ -28,12 +29,12 @@ int main(int argc, char *argv[])
     const string errstr = ": \033[1;31merror:\033[0m ";
     const string warstr = ": \033[1;35mwarning:\033[0m ";
     const string progstr(__FILE__,string(__FILE__).find_last_of("/")+1,strlen(__FILE__)-string(__FILE__).find_last_of("/")-5);
-    const valarray<uint8_t> oktypes = {1,2,3,8,9,16,17,32,33,64,65,101,102,103};
-    const size_t I = 1, O = 1;
+    const valarray<size_t> oktypes = {1u,2u,3u,8u,9u,16u,17u,32u,33u,64u,65u,101u,102u,103u};
+    const size_t I = 1u, O = 1u;
     ifstream ifs1; ofstream ofs1;
     int8_t stdi1, stdo1, wo1;
     ioinfo i1, o1;
-    uint32_t h;
+    size_t h;
 
 
     //Description
@@ -86,7 +87,7 @@ int main(int argc, char *argv[])
     if ((i1.T==oktypes).sum()==0)
     {
         cerr << progstr+": " << __LINE__ << errstr << "input data type must be in " << "{";
-        for (auto o : oktypes) { cerr << int(o) << ((o==oktypes[oktypes.size()-1]) ? "}" : ","); }
+        for (auto o : oktypes) { cerr << int(o) << ((o==oktypes[oktypes.size()-1u]) ? "}" : ","); }
         cerr << endl; return 1;
     }
 
@@ -96,13 +97,14 @@ int main(int argc, char *argv[])
     //Get h
     if (a_h->count==0) { h = 0u; }
     else if (a_h->ival[0]<0) { cerr << progstr+": " << __LINE__ << errstr << "h must be nonnegative" << endl; return 1; }
-    else { h = uint32_t(a_h->ival[0]); }
+    else { h = size_t(a_h->ival[0]); }
     if (h>=i1.H) { cerr << progstr+": " << __LINE__ << errstr << "h must be int in [0 H-1]" << endl; return 1; }
 
 
     //Set output header info
     o1.F = i1.F; o1.T = i1.T;
-    o1.R = i1.R; o1.C = i1.C; o1.S = i1.S; o1.H = 1u;
+    o1.R = i1.R; o1.C = i1.C;
+    o1.S = i1.S; o1.H = 1u;
 
 
     //Open output
@@ -121,7 +123,7 @@ int main(int argc, char *argv[])
 
 
     //Process
-    if (i1.T==1)
+    if (i1.T==1u)
     {
         valarray<float> X(i1.N()), Y(o1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }

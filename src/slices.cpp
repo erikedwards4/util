@@ -1,5 +1,6 @@
 //@author Erik Edwards
-//@date 2019-2020
+//@date 2018-present
+//@license BSD 3-clause
 
 
 #include <iostream>
@@ -10,7 +11,7 @@
 #include <valarray>
 #include <unordered_map>
 #include <argtable2.h>
-#include "/home/erik/codee/util/cmli.hpp"
+#include "../util/cmli.hpp"
 #include <complex>
 
 #ifdef I
@@ -28,12 +29,12 @@ int main(int argc, char *argv[])
     const string errstr = ": \033[1;31merror:\033[0m ";
     const string warstr = ": \033[1;35mwarning:\033[0m ";
     const string progstr(__FILE__,string(__FILE__).find_last_of("/")+1,strlen(__FILE__)-string(__FILE__).find_last_of("/")-5);
-    const valarray<uint8_t> oktypes = {1,2,3,8,9,16,17,32,33,64,65,101,102,103};
-    const size_t I = 2, O = 1;
+    const valarray<size_t> oktypes = {1u,2u,3u,8u,9u,16u,17u,32u,33u,64u,65u,101u,102u,103u};
+    const size_t I = 2u, O = 1u;
     ifstream ifs1, ifs2; ofstream ofs1;
     int8_t stdi1, stdi2, stdo1, wo1;
     ioinfo i1, i2, o1;
-    size_t s, so;
+    size_t s;
     valarray<size_t> X2;
 
 
@@ -96,7 +97,7 @@ int main(int argc, char *argv[])
     if ((i1.T==oktypes).sum()==0 || (i2.T==oktypes).sum()==0)
     {
         cerr << progstr+": " << __LINE__ << errstr << "input data type must be in " << "{";
-        for (auto o : oktypes) { cerr << int(o) << ((o==oktypes[oktypes.size()-1]) ? "}" : ","); }
+        for (auto o : oktypes) { cerr << int(o) << ((o==oktypes[oktypes.size()-1u]) ? "}" : ","); }
         cerr << endl; return 1;
     }
 
@@ -105,13 +106,14 @@ int main(int argc, char *argv[])
 
 
     //Checks
-    if (i2.T!=33) { cerr << progstr+": " << __LINE__ << errstr << "input 2 (I) data type must be 33 (size_t)" << endl; return 1; }
+    if (i2.T!=33u && i2.T!=65u) { cerr << progstr+": " << __LINE__ << errstr << "input 2 (I) data type must be 33 (size_t)" << endl; return 1; }
     if (!i2.isvec()) { cerr << progstr+": " << __LINE__ << errstr << "input 2 (I) must be a vector of indices" << endl; return 1; }
 
 
     //Set output header info
     o1.F = i1.F; o1.T = i1.T;
-    o1.R = i1.R; o1.C = i1.C; o1.S = i2.N(); o1.H = i1.H;
+    o1.R = i1.R; o1.C = i1.C;
+    o1.S = i2.N(); o1.H = i1.H;
 
 
     //Open output
@@ -135,12 +137,12 @@ int main(int argc, char *argv[])
     
 
     //Process
-    if (i1.T==1)
+    if (i1.T==1u)
     {
         valarray<float> X(i1.N()), Y(o1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file 1 (X)" << endl; return 1; }
-        for (so=0u; so<o1.S; so++)
+        for (size_t so=0u; so<o1.S; ++so)
         {
             s = X2[so];
             if (i1.iscolmajor())
@@ -168,7 +170,7 @@ int main(int argc, char *argv[])
         valarray<double> X(i1.N()), Y(o1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file 1 (X)" << endl; return 1; }
-        for (so=0u; so<o1.S; so++)
+        for (size_t so=0u; so<o1.S; ++so)
         {
             s = X2[so];
             if (i1.iscolmajor())
@@ -196,7 +198,7 @@ int main(int argc, char *argv[])
         valarray<long double> X(i1.N()), Y(o1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file 1 (X)" << endl; return 1; }
-        for (so=0u; so<o1.S; so++)
+        for (size_t so=0u; so<o1.S; ++so)
         {
             s = X2[so];
             if (i1.iscolmajor())
@@ -224,7 +226,7 @@ int main(int argc, char *argv[])
         valarray<int8_t> X(i1.N()), Y(o1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file 1 (X)" << endl; return 1; }
-        for (so=0u; so<o1.S; so++)
+        for (size_t so=0u; so<o1.S; ++so)
         {
             s = X2[so];
             if (i1.iscolmajor())
@@ -252,7 +254,7 @@ int main(int argc, char *argv[])
         valarray<uint8_t> X(i1.N()), Y(o1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file 1 (X)" << endl; return 1; }
-        for (so=0u; so<o1.S; so++)
+        for (size_t so=0u; so<o1.S; ++so)
         {
             s = X2[so];
             if (i1.iscolmajor())
@@ -280,7 +282,7 @@ int main(int argc, char *argv[])
         valarray<int16_t> X(i1.N()), Y(o1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file 1 (X)" << endl; return 1; }
-        for (so=0u; so<o1.S; so++)
+        for (size_t so=0u; so<o1.S; ++so)
         {
             s = X2[so];
             if (i1.iscolmajor())
@@ -308,7 +310,7 @@ int main(int argc, char *argv[])
         valarray<uint16_t> X(i1.N()), Y(o1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file 1 (X)" << endl; return 1; }
-        for (so=0u; so<o1.S; so++)
+        for (size_t so=0u; so<o1.S; ++so)
         {
             s = X2[so];
             if (i1.iscolmajor())
@@ -336,7 +338,7 @@ int main(int argc, char *argv[])
         valarray<int32_t> X(i1.N()), Y(o1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file 1 (X)" << endl; return 1; }
-        for (so=0u; so<o1.S; so++)
+        for (size_t so=0u; so<o1.S; ++so)
         {
             s = X2[so];
             if (i1.iscolmajor())
@@ -364,7 +366,7 @@ int main(int argc, char *argv[])
         valarray<uint32_t> X(i1.N()), Y(o1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file 1 (X)" << endl; return 1; }
-        for (so=0u; so<o1.S; so++)
+        for (size_t so=0u; so<o1.S; ++so)
         {
             s = X2[so];
             if (i1.iscolmajor())
@@ -392,7 +394,7 @@ int main(int argc, char *argv[])
         valarray<int64_t> X(i1.N()), Y(o1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file 1 (X)" << endl; return 1; }
-        for (so=0u; so<o1.S; so++)
+        for (size_t so=0u; so<o1.S; ++so)
         {
             s = X2[so];
             if (i1.iscolmajor())
@@ -420,7 +422,7 @@ int main(int argc, char *argv[])
         valarray<uint64_t> X(i1.N()), Y(o1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file 1 (X)" << endl; return 1; }
-        for (so=0u; so<o1.S; so++)
+        for (size_t so=0u; so<o1.S; ++so)
         {
             s = X2[so];
             if (i1.iscolmajor())
@@ -448,7 +450,7 @@ int main(int argc, char *argv[])
         valarray<complex<float>> X(i1.N()), Y(o1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file 1 (X)" << endl; return 1; }
-        for (so=0u; so<o1.S; so++)
+        for (size_t so=0u; so<o1.S; ++so)
         {
             s = X2[so];
             if (i1.iscolmajor())
@@ -476,7 +478,7 @@ int main(int argc, char *argv[])
         valarray<complex<double>> X(i1.N()), Y(o1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file 1 (X)" << endl; return 1; }
-        for (so=0u; so<o1.S; so++)
+        for (size_t so=0u; so<o1.S; ++so)
         {
             s = X2[so];
             if (i1.iscolmajor())
@@ -504,7 +506,7 @@ int main(int argc, char *argv[])
         valarray<complex<long double>> X(i1.N()), Y(o1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file 1 (X)" << endl; return 1; }
-        for (so=0u; so<o1.S; so++)
+        for (size_t so=0u; so<o1.S; ++so)
         {
             s = X2[so];
             if (i1.iscolmajor())

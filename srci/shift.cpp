@@ -2,8 +2,8 @@
 #include <complex>
 
 //Declarations
-const valarray<uint8_t> oktypes = {1,2,3,8,9,16,17,32,33,64,65,101,102,103};
-const size_t I = 1, O = 1;
+const valarray<size_t> oktypes = {1u,2u,3u,8u,9u,16u,17u,32u,33u,64u,65u,101u,102u,103u};
+const size_t I = 1u, O = 1u;
 int cnt;
 
 //Description
@@ -46,7 +46,7 @@ o1.R = i1.R; o1.C = i1.C; o1.S = i1.S; o1.H = i1.H;
 //Other prep
 
 //Process
-if (i1.T==1)
+if (i1.T==1u)
 {
     valarray<float> X(i1.N()), Y(o1.N());
     try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }

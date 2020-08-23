@@ -2,8 +2,8 @@
 #include <complex>
 
 //Declarations
-const valarray<uint8_t> oktypes = {1,2,3,8,9,16,17,32,33,64,65,101,102,103};
-const size_t I = 1, O = 1;
+const valarray<size_t> oktypes = {1u,2u,3u,8u,9u,16u,17u,32u,33u,64u,65u,101u,102u,103u};
+const size_t I = 1u, O = 1u;
 
 //Description
 string descr;
@@ -60,7 +60,7 @@ o1.F = i1.F; o1.T = i1.T;
 //Other prep
 
 //Process
-if (i1.T==1)
+if (i1.T==1u)
 {
     float *X;
     try { X = new float[i1.N()]; }

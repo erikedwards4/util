@@ -1,5 +1,6 @@
 //@author Erik Edwards
-//@date 2019
+//@date 2018-present
+//@license BSD 3-clause
 
 
 #include <iostream>
@@ -24,8 +25,8 @@ int main(int argc, char *argv[])
     const string errstr = ": \033[1;31merror:\033[0m ";
     const string warstr = ": \033[1;35mwarning:\033[0m ";
     const string progstr(__FILE__,string(__FILE__).find_last_of("/")+1,strlen(__FILE__)-string(__FILE__).find_last_of("/")-5);
-    const valarray<uint8_t> oktypes = {1,2,3,8,9,16,17,32,33,64,65,101,102,103};
-    const size_t I = 1, O = 1;
+    const valarray<size_t> oktypes = {1u,2u,3u,8u,9u,16u,17u,32u,33u,64u,65u,101u,102u,103u};
+    const size_t I = 1u, O = 1u;
     ifstream ifs1; ofstream ofs1;
     int8_t stdi1, stdo1, wo1;
     ioinfo i1, o1;
@@ -101,13 +102,13 @@ int main(int argc, char *argv[])
     if (a_ofmt->count==0) { o1.F = i1.F; }
     else if (a_ofmt->ival[0]<0) { cerr << progstr+": " << __LINE__ << errstr << "file format must be nonnegative" << endl; return 1; }
     else if (a_ofmt->ival[0]>255) { cerr << progstr+": " << __LINE__ << errstr << "file format must be < 256" << endl; return 1; }
-    else { o1.F = uint8_t(a_ofmt->ival[0]); }
+    else { o1.F = size_t(a_ofmt->ival[0]); }
 
     //Get o1.T
     if (a_otyp->count==0) { o1.T = i1.T; }
     else if (a_otyp->ival[0]<1) { cerr << progstr+": " << __LINE__ << errstr << "data type must be positive" << endl; return 1; }
     else if (a_otyp->ival[0]>103) { cerr << progstr+": " << __LINE__ << errstr << "data type must be <= 103" << endl; return 1; }
-    else { o1.T = uint8_t(a_otyp->ival[0]); }
+    else { o1.T = size_t(a_otyp->ival[0]); }
     if ((o1.T==oktypes).sum()==0)
     {
         cerr << progstr+": " << __LINE__ << errstr << "output data type must be in " << "{";
@@ -145,13 +146,13 @@ int main(int argc, char *argv[])
     
 
     //Process
-    if (i1.T==1)
+    if (i1.T==1u)
     {
         valarray<float> X(i1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file" << endl; return 1; }
         if (i1.iscolmajor()!=o1.iscolmajor()) { X = valarray<float>(X[GS]); }
-        if (o1.T==1)
+        if (o1.T==1u)
         {
             valarray<float> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -163,7 +164,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==2)
+        else if (o1.T==2u)
         {
             valarray<double> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -175,7 +176,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==3)
+        else if (o1.T==3u)
         {
             valarray<long double> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -187,7 +188,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==8)
+        else if (o1.T==8u)
         {
             valarray<int8_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -199,7 +200,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==9)
+        else if (o1.T==9u)
         {
             valarray<uint8_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -211,7 +212,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==16)
+        else if (o1.T==16u)
         {
             valarray<int16_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -223,7 +224,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==17)
+        else if (o1.T==17u)
         {
             valarray<uint16_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -235,7 +236,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==32)
+        else if (o1.T==32u)
         {
             valarray<int32_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -247,7 +248,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==33)
+        else if (o1.T==33u)
         {
             valarray<uint32_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -259,7 +260,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==64)
+        else if (o1.T==64u)
         {
             valarray<int64_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -271,7 +272,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==65)
+        else if (o1.T==65u)
         {
             valarray<uint64_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -283,7 +284,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==101)
+        else if (o1.T==101u)
         {
             valarray<complex<float>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -295,7 +296,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==102)
+        else if (o1.T==102u)
         {
             valarray<complex<double>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -307,7 +308,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==103)
+        else if (o1.T==103u)
         {
             valarray<complex<long double>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -321,13 +322,13 @@ int main(int argc, char *argv[])
         }
         else { cerr << progstr+": " << __LINE__ << errstr << "output data type not recognized" << endl; return 1; }
     }
-    else if (i1.T==2)
+    else if (i1.T==2u)
     {
         valarray<double> X(i1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file" << endl; return 1; }
         if (i1.iscolmajor()!=o1.iscolmajor()) { X = valarray<double>(X[GS]); }
-        if (o1.T==1)
+        if (o1.T==1u)
         {
             valarray<float> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -339,7 +340,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==2)
+        else if (o1.T==2u)
         {
             valarray<double> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -351,7 +352,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==3)
+        else if (o1.T==3u)
         {
             valarray<long double> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -363,7 +364,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==8)
+        else if (o1.T==8u)
         {
             valarray<int8_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -375,7 +376,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==9)
+        else if (o1.T==9u)
         {
             valarray<uint8_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -387,7 +388,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==16)
+        else if (o1.T==16u)
         {
             valarray<int16_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -399,7 +400,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==17)
+        else if (o1.T==17u)
         {
             valarray<uint16_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -411,7 +412,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==32)
+        else if (o1.T==32u)
         {
             valarray<int32_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -423,7 +424,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==33)
+        else if (o1.T==33u)
         {
             valarray<uint32_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -435,7 +436,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==64)
+        else if (o1.T==64u)
         {
             valarray<int64_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -447,7 +448,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==65)
+        else if (o1.T==65u)
         {
             valarray<uint64_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -459,7 +460,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==101)
+        else if (o1.T==101u)
         {
             valarray<complex<float>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -471,7 +472,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==102)
+        else if (o1.T==102u)
         {
             valarray<complex<double>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -483,7 +484,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==103)
+        else if (o1.T==103u)
         {
             valarray<complex<long double>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -497,13 +498,13 @@ int main(int argc, char *argv[])
         }
         else { cerr << progstr+": " << __LINE__ << errstr << "output data type not recognized" << endl; return 1; }
     }
-    else if (i1.T==3)
+    else if (i1.T==3u)
     {
         valarray<long double> X(i1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file" << endl; return 1; }
         if (i1.iscolmajor()!=o1.iscolmajor()) { X = valarray<long double>(X[GS]); }
-        if (o1.T==1)
+        if (o1.T==1u)
         {
             valarray<float> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -515,7 +516,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==2)
+        else if (o1.T==2u)
         {
             valarray<double> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -527,7 +528,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==3)
+        else if (o1.T==3u)
         {
             valarray<long double> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -539,7 +540,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==8)
+        else if (o1.T==8u)
         {
             valarray<int8_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -551,7 +552,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==9)
+        else if (o1.T==9u)
         {
             valarray<uint8_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -563,7 +564,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==16)
+        else if (o1.T==16u)
         {
             valarray<int16_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -575,7 +576,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==17)
+        else if (o1.T==17u)
         {
             valarray<uint16_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -587,7 +588,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==32)
+        else if (o1.T==32u)
         {
             valarray<int32_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -599,7 +600,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==33)
+        else if (o1.T==33u)
         {
             valarray<uint32_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -611,7 +612,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==64)
+        else if (o1.T==64u)
         {
             valarray<int64_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -623,7 +624,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==65)
+        else if (o1.T==65u)
         {
             valarray<uint64_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -635,7 +636,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==101)
+        else if (o1.T==101u)
         {
             valarray<complex<float>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -647,7 +648,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==102)
+        else if (o1.T==102u)
         {
             valarray<complex<double>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -659,7 +660,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==103)
+        else if (o1.T==103u)
         {
             valarray<complex<long double>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -673,13 +674,13 @@ int main(int argc, char *argv[])
         }
         else { cerr << progstr+": " << __LINE__ << errstr << "output data type not recognized" << endl; return 1; }
     }
-    else if (i1.T==8)
+    else if (i1.T==8u)
     {
         valarray<int8_t> X(i1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file" << endl; return 1; }
         if (i1.iscolmajor()!=o1.iscolmajor()) { X = valarray<int8_t>(X[GS]); }
-        if (o1.T==1)
+        if (o1.T==1u)
         {
             valarray<float> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -691,7 +692,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==2)
+        else if (o1.T==2u)
         {
             valarray<double> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -703,7 +704,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==3)
+        else if (o1.T==3u)
         {
             valarray<long double> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -715,7 +716,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==8)
+        else if (o1.T==8u)
         {
             valarray<int8_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -727,7 +728,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==9)
+        else if (o1.T==9u)
         {
             valarray<uint8_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -739,7 +740,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==16)
+        else if (o1.T==16u)
         {
             valarray<int16_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -751,7 +752,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==17)
+        else if (o1.T==17u)
         {
             valarray<uint16_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -763,7 +764,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==32)
+        else if (o1.T==32u)
         {
             valarray<int32_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -775,7 +776,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==33)
+        else if (o1.T==33u)
         {
             valarray<uint32_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -787,7 +788,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==64)
+        else if (o1.T==64u)
         {
             valarray<int64_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -799,7 +800,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==65)
+        else if (o1.T==65u)
         {
             valarray<uint64_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -811,7 +812,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==101)
+        else if (o1.T==101u)
         {
             valarray<complex<float>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -823,7 +824,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==102)
+        else if (o1.T==102u)
         {
             valarray<complex<double>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -835,7 +836,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==103)
+        else if (o1.T==103u)
         {
             valarray<complex<long double>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -849,13 +850,13 @@ int main(int argc, char *argv[])
         }
         else { cerr << progstr+": " << __LINE__ << errstr << "output data type not recognized" << endl; return 1; }
     }
-    else if (i1.T==9)
+    else if (i1.T==9u)
     {
         valarray<uint8_t> X(i1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file" << endl; return 1; }
         if (i1.iscolmajor()!=o1.iscolmajor()) { X = valarray<uint8_t>(X[GS]); }
-        if (o1.T==1)
+        if (o1.T==1u)
         {
             valarray<float> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -867,7 +868,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==2)
+        else if (o1.T==2u)
         {
             valarray<double> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -879,7 +880,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==3)
+        else if (o1.T==3u)
         {
             valarray<long double> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -891,7 +892,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==8)
+        else if (o1.T==8u)
         {
             valarray<int8_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -903,7 +904,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==9)
+        else if (o1.T==9u)
         {
             valarray<uint8_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -915,7 +916,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==16)
+        else if (o1.T==16u)
         {
             valarray<int16_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -927,7 +928,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==17)
+        else if (o1.T==17u)
         {
             valarray<uint16_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -939,7 +940,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==32)
+        else if (o1.T==32u)
         {
             valarray<int32_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -951,7 +952,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==33)
+        else if (o1.T==33u)
         {
             valarray<uint32_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -963,7 +964,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==64)
+        else if (o1.T==64u)
         {
             valarray<int64_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -975,7 +976,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==65)
+        else if (o1.T==65u)
         {
             valarray<uint64_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -987,7 +988,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==101)
+        else if (o1.T==101u)
         {
             valarray<complex<float>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -999,7 +1000,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==102)
+        else if (o1.T==102u)
         {
             valarray<complex<double>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1011,7 +1012,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==103)
+        else if (o1.T==103u)
         {
             valarray<complex<long double>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1025,13 +1026,13 @@ int main(int argc, char *argv[])
         }
         else { cerr << progstr+": " << __LINE__ << errstr << "output data type not recognized" << endl; return 1; }
     }
-    else if (i1.T==16)
+    else if (i1.T==16u)
     {
         valarray<int16_t> X(i1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file" << endl; return 1; }
         if (i1.iscolmajor()!=o1.iscolmajor()) { X = valarray<int16_t>(X[GS]); }
-        if (o1.T==1)
+        if (o1.T==1u)
         {
             valarray<float> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1043,7 +1044,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==2)
+        else if (o1.T==2u)
         {
             valarray<double> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1055,7 +1056,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==3)
+        else if (o1.T==3u)
         {
             valarray<long double> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1067,7 +1068,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==8)
+        else if (o1.T==8u)
         {
             valarray<int8_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1079,7 +1080,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==9)
+        else if (o1.T==9u)
         {
             valarray<uint8_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1091,7 +1092,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==16)
+        else if (o1.T==16u)
         {
             valarray<int16_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1103,7 +1104,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==17)
+        else if (o1.T==17u)
         {
             valarray<uint16_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1115,7 +1116,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==32)
+        else if (o1.T==32u)
         {
             valarray<int32_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1127,7 +1128,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==33)
+        else if (o1.T==33u)
         {
             valarray<uint32_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1139,7 +1140,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==64)
+        else if (o1.T==64u)
         {
             valarray<int64_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1151,7 +1152,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==65)
+        else if (o1.T==65u)
         {
             valarray<uint64_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1163,7 +1164,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==101)
+        else if (o1.T==101u)
         {
             valarray<complex<float>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1175,7 +1176,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==102)
+        else if (o1.T==102u)
         {
             valarray<complex<double>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1187,7 +1188,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==103)
+        else if (o1.T==103u)
         {
             valarray<complex<long double>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1201,13 +1202,13 @@ int main(int argc, char *argv[])
         }
         else { cerr << progstr+": " << __LINE__ << errstr << "output data type not recognized" << endl; return 1; }
     }
-    else if (i1.T==17)
+    else if (i1.T==17u)
     {
         valarray<uint16_t> X(i1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file" << endl; return 1; }
         if (i1.iscolmajor()!=o1.iscolmajor()) { X = valarray<uint16_t>(X[GS]); }
-        if (o1.T==1)
+        if (o1.T==1u)
         {
             valarray<float> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1219,7 +1220,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==2)
+        else if (o1.T==2u)
         {
             valarray<double> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1231,7 +1232,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==3)
+        else if (o1.T==3u)
         {
             valarray<long double> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1243,7 +1244,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==8)
+        else if (o1.T==8u)
         {
             valarray<int8_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1255,7 +1256,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==9)
+        else if (o1.T==9u)
         {
             valarray<uint8_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1267,7 +1268,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==16)
+        else if (o1.T==16u)
         {
             valarray<int16_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1279,7 +1280,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==17)
+        else if (o1.T==17u)
         {
             valarray<uint16_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1291,7 +1292,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==32)
+        else if (o1.T==32u)
         {
             valarray<int32_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1303,7 +1304,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==33)
+        else if (o1.T==33u)
         {
             valarray<uint32_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1315,7 +1316,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==64)
+        else if (o1.T==64u)
         {
             valarray<int64_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1327,7 +1328,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==65)
+        else if (o1.T==65u)
         {
             valarray<uint64_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1339,7 +1340,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==101)
+        else if (o1.T==101u)
         {
             valarray<complex<float>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1351,7 +1352,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==102)
+        else if (o1.T==102u)
         {
             valarray<complex<double>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1363,7 +1364,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==103)
+        else if (o1.T==103u)
         {
             valarray<complex<long double>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1377,13 +1378,13 @@ int main(int argc, char *argv[])
         }
         else { cerr << progstr+": " << __LINE__ << errstr << "output data type not recognized" << endl; return 1; }
     }
-    else if (i1.T==32)
+    else if (i1.T==32u)
     {
         valarray<int32_t> X(i1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file" << endl; return 1; }
         if (i1.iscolmajor()!=o1.iscolmajor()) { X = valarray<int32_t>(X[GS]); }
-        if (o1.T==1)
+        if (o1.T==1u)
         {
             valarray<float> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1395,7 +1396,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==2)
+        else if (o1.T==2u)
         {
             valarray<double> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1407,7 +1408,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==3)
+        else if (o1.T==3u)
         {
             valarray<long double> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1419,7 +1420,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==8)
+        else if (o1.T==8u)
         {
             valarray<int8_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1431,7 +1432,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==9)
+        else if (o1.T==9u)
         {
             valarray<uint8_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1443,7 +1444,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==16)
+        else if (o1.T==16u)
         {
             valarray<int16_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1455,7 +1456,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==17)
+        else if (o1.T==17u)
         {
             valarray<uint16_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1467,7 +1468,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==32)
+        else if (o1.T==32u)
         {
             valarray<int32_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1479,7 +1480,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==33)
+        else if (o1.T==33u)
         {
             valarray<uint32_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1491,7 +1492,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==64)
+        else if (o1.T==64u)
         {
             valarray<int64_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1503,7 +1504,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==65)
+        else if (o1.T==65u)
         {
             valarray<uint64_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1515,7 +1516,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==101)
+        else if (o1.T==101u)
         {
             valarray<complex<float>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1527,7 +1528,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==102)
+        else if (o1.T==102u)
         {
             valarray<complex<double>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1539,7 +1540,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==103)
+        else if (o1.T==103u)
         {
             valarray<complex<long double>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1553,13 +1554,13 @@ int main(int argc, char *argv[])
         }
         else { cerr << progstr+": " << __LINE__ << errstr << "output data type not recognized" << endl; return 1; }
     }
-    else if (i1.T==33)
+    else if (i1.T==33u)
     {
         valarray<uint32_t> X(i1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file" << endl; return 1; }
         if (i1.iscolmajor()!=o1.iscolmajor()) { X = valarray<uint32_t>(X[GS]); }
-        if (o1.T==1)
+        if (o1.T==1u)
         {
             valarray<float> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1571,7 +1572,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==2)
+        else if (o1.T==2u)
         {
             valarray<double> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1583,7 +1584,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==3)
+        else if (o1.T==3u)
         {
             valarray<long double> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1595,7 +1596,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==8)
+        else if (o1.T==8u)
         {
             valarray<int8_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1607,7 +1608,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==9)
+        else if (o1.T==9u)
         {
             valarray<uint8_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1619,7 +1620,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==16)
+        else if (o1.T==16u)
         {
             valarray<int16_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1631,7 +1632,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==17)
+        else if (o1.T==17u)
         {
             valarray<uint16_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1643,7 +1644,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==32)
+        else if (o1.T==32u)
         {
             valarray<int32_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1655,7 +1656,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==33)
+        else if (o1.T==33u)
         {
             valarray<uint32_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1667,7 +1668,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==64)
+        else if (o1.T==64u)
         {
             valarray<int64_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1679,7 +1680,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==65)
+        else if (o1.T==65u)
         {
             valarray<uint64_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1691,7 +1692,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==101)
+        else if (o1.T==101u)
         {
             valarray<complex<float>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1703,7 +1704,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==102)
+        else if (o1.T==102u)
         {
             valarray<complex<double>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1715,7 +1716,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==103)
+        else if (o1.T==103u)
         {
             valarray<complex<long double>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1729,13 +1730,13 @@ int main(int argc, char *argv[])
         }
         else { cerr << progstr+": " << __LINE__ << errstr << "output data type not recognized" << endl; return 1; }
     }
-    else if (i1.T==64)
+    else if (i1.T==64u)
     {
         valarray<int64_t> X(i1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file" << endl; return 1; }
         if (i1.iscolmajor()!=o1.iscolmajor()) { X = valarray<int64_t>(X[GS]); }
-        if (o1.T==1)
+        if (o1.T==1u)
         {
             valarray<float> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1747,7 +1748,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==2)
+        else if (o1.T==2u)
         {
             valarray<double> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1759,7 +1760,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==3)
+        else if (o1.T==3u)
         {
             valarray<long double> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1771,7 +1772,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==8)
+        else if (o1.T==8u)
         {
             valarray<int8_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1783,7 +1784,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==9)
+        else if (o1.T==9u)
         {
             valarray<uint8_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1795,7 +1796,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==16)
+        else if (o1.T==16u)
         {
             valarray<int16_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1807,7 +1808,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==17)
+        else if (o1.T==17u)
         {
             valarray<uint16_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1819,7 +1820,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==32)
+        else if (o1.T==32u)
         {
             valarray<int32_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1831,7 +1832,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==33)
+        else if (o1.T==33u)
         {
             valarray<uint32_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1843,7 +1844,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==64)
+        else if (o1.T==64u)
         {
             valarray<int64_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1855,7 +1856,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==65)
+        else if (o1.T==65u)
         {
             valarray<uint64_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1867,7 +1868,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==101)
+        else if (o1.T==101u)
         {
             valarray<complex<float>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1879,7 +1880,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==102)
+        else if (o1.T==102u)
         {
             valarray<complex<double>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1891,7 +1892,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==103)
+        else if (o1.T==103u)
         {
             valarray<complex<long double>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1905,13 +1906,13 @@ int main(int argc, char *argv[])
         }
         else { cerr << progstr+": " << __LINE__ << errstr << "output data type not recognized" << endl; return 1; }
     }
-    else if (i1.T==65)
+    else if (i1.T==65u)
     {
         valarray<uint64_t> X(i1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file" << endl; return 1; }
         if (i1.iscolmajor()!=o1.iscolmajor()) { X = valarray<uint64_t>(X[GS]); }
-        if (o1.T==1)
+        if (o1.T==1u)
         {
             valarray<float> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1923,7 +1924,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==2)
+        else if (o1.T==2u)
         {
             valarray<double> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1935,7 +1936,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==3)
+        else if (o1.T==3u)
         {
             valarray<long double> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1947,7 +1948,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==8)
+        else if (o1.T==8u)
         {
             valarray<int8_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1959,7 +1960,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==9)
+        else if (o1.T==9u)
         {
             valarray<uint8_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1971,7 +1972,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==16)
+        else if (o1.T==16u)
         {
             valarray<int16_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1983,7 +1984,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==17)
+        else if (o1.T==17u)
         {
             valarray<uint16_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -1995,7 +1996,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==32)
+        else if (o1.T==32u)
         {
             valarray<int32_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -2007,7 +2008,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==33)
+        else if (o1.T==33u)
         {
             valarray<uint32_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -2019,7 +2020,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==64)
+        else if (o1.T==64u)
         {
             valarray<int64_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -2031,7 +2032,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==65)
+        else if (o1.T==65u)
         {
             valarray<uint64_t> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -2043,7 +2044,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==101)
+        else if (o1.T==101u)
         {
             valarray<complex<float>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -2055,7 +2056,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==102)
+        else if (o1.T==102u)
         {
             valarray<complex<double>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -2067,7 +2068,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==103)
+        else if (o1.T==103u)
         {
             valarray<complex<long double>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -2081,13 +2082,13 @@ int main(int argc, char *argv[])
         }
         else { cerr << progstr+": " << __LINE__ << errstr << "output data type not recognized" << endl; return 1; }
     }
-    else if (i1.T==101)
+    else if (i1.T==101u)
     {
         valarray<complex<float>> X(i1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file" << endl; return 1; }
         if (i1.iscolmajor()!=o1.iscolmajor()) { X = valarray<complex<float>>(X[GS]); }
-        if (o1.T==101)
+        if (o1.T==101u)
         {
             valarray<complex<float>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -2099,7 +2100,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==102)
+        else if (o1.T==102u)
         {
             valarray<complex<double>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -2111,7 +2112,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==103)
+        else if (o1.T==103u)
         {
             valarray<complex<long double>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -2125,13 +2126,13 @@ int main(int argc, char *argv[])
         }
         else { cerr << progstr+": " << __LINE__ << errstr << "output data type not recognized" << endl; return 1; }
     }
-    else if (i1.T==102)
+    else if (i1.T==102u)
     {
         valarray<complex<double>> X(i1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file" << endl; return 1; }
         if (i1.iscolmajor()!=o1.iscolmajor()) { X = valarray<complex<double>>(X[GS]); }
-        if (o1.T==101)
+        if (o1.T==101u)
         {
             valarray<complex<float>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -2143,7 +2144,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==102)
+        else if (o1.T==102u)
         {
             valarray<complex<double>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -2155,7 +2156,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==103)
+        else if (o1.T==103u)
         {
             valarray<complex<long double>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -2169,13 +2170,13 @@ int main(int argc, char *argv[])
         }
         else { cerr << progstr+": " << __LINE__ << errstr << "output data type not recognized" << endl; return 1; }
     }
-    else if (i1.T==103)
+    else if (i1.T==103u)
     {
         valarray<complex<long double>> X(i1.N());
         try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file" << endl; return 1; }
         if (i1.iscolmajor()!=o1.iscolmajor()) { X = valarray<complex<long double>>(X[GS]); }
-        if (o1.T==101)
+        if (o1.T==101u)
         {
             valarray<complex<float>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -2187,7 +2188,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==102)
+        else if (o1.T==102u)
         {
             valarray<complex<double>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }
@@ -2199,7 +2200,7 @@ int main(int argc, char *argv[])
                 catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
             }
         }
-        else if (o1.T==103)
+        else if (o1.T==103u)
         {
             valarray<complex<long double>> Y(o1.N());
             try { copy(begin(X),end(X),begin(Y)); }

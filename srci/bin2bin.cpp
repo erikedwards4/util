@@ -2,8 +2,8 @@
 #include <complex>
 
 //Declarations
-const valarray<uint8_t> oktypes = {1,2,3,8,9,16,17,32,33,64,65,101,102,103};
-const size_t I = 1, O = 1;
+const valarray<size_t> oktypes = {1u,2u,3u,8u,9u,16u,17u,32u,33u,64u,65u,101u,102u,103u};
+const size_t I = 1u, O = 1u;
 gslice GS;
 
 //Description
@@ -62,13 +62,13 @@ if (i1.iscolmajor()!=o1.iscolmajor())
 }
 
 //Process
-if (i1.T==1)
+if (i1.T==1u)
 {
     valarray<float> X(i1.N());
     try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
     catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file" << endl; return 1; }
     if (i1.iscolmajor()!=o1.iscolmajor()) { X = valarray<float>(X[GS]); }
-    if (o1.T==1)
+    if (o1.T==1u)
     {
         valarray<float> Y(o1.N());
         try { copy(begin(X),end(X),begin(Y)); }
@@ -104,7 +104,7 @@ if (i1.T==1)
             catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
         }
     }
-    else if (o1.T==8)
+    else if (o1.T==8u)
     {
         valarray<int8_t> Y(o1.N());
         try { copy(begin(X),end(X),begin(Y)); }
@@ -200,7 +200,7 @@ if (i1.T==1)
             catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing data for output file" << endl; return 1; }
         }
     }
-    else if (o1.T==101)
+    else if (o1.T==101u)
     {
         valarray<complex<float>> Y(o1.N());
         try { copy(begin(X),end(X),begin(Y)); }
@@ -238,13 +238,13 @@ if (i1.T==1)
     }
     else { cerr << progstr+": " << __LINE__ << errstr << "output data type not recognized" << endl; return 1; }
 }
-else if (i1.T==101)
+else if (i1.T==101u)
 {
     valarray<complex<float>> X(i1.N());
     try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
     catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem reading data for input file" << endl; return 1; }
     if (i1.iscolmajor()!=o1.iscolmajor()) { X = valarray<complex<float>>(X[GS]); }
-    if (o1.T==101)
+    if (o1.T==101u)
     {
         valarray<complex<float>> Y(o1.N());
         try { copy(begin(X),end(X),begin(Y)); }

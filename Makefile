@@ -1,5 +1,6 @@
 #@author Erik Edwards
 #@date 2018-present
+#@license BSD 3-clause
 
 #util is my own library of utility functions in C++.
 #This is the makefile for the command-line tools in C++.
@@ -13,7 +14,7 @@ CC=clang++
 
 ifeq ($(CC),clang++)
 	STD=-std=c++17
-	WFLAG=-Weverything -Wno-c++98-compat -Wno-padded -Wno-old-style-cast -Wno-gnu-imaginary-constant
+	WFLAG=-Weverything -Wno-c++98-compat -Wno-old-style-cast -Wno-gnu-imaginary-constant
 else
 	STD=-std=gnu++17
 	WFLAG=-Wall -Wextra
@@ -162,4 +163,4 @@ vec: srci/vec.cpp
 Clean: clean
 clean:
 	find ./obj -type f -name *.o | xargs rm -f
-	rm -f 7 X* Y*
+	rm -f 7 X* Y* x* y*

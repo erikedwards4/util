@@ -3,8 +3,8 @@
 #include <complex>
 
 //Declarations
-const valarray<uint8_t> oktypes = {1,2,3,101,102,103};
-const size_t I = 1, O = 1;
+const valarray<size_t> oktypes = {1u,2u,3u,101u,102u,103u};
+const size_t I = 1u, O = 1u;
 
 //Description
 string descr;
@@ -30,13 +30,13 @@ struct arg_file  *a_fo = arg_filen("o","ofile","<file>",0,O,"output file (Y)");
 //Checks
 
 //Set output header
-o1.F = i1.F; o1.T = 8;
+o1.F = i1.F; o1.T = 10u;
 o1.R = i1.R; o1.C = i1.C; o1.S = i1.S; o1.H = i1.H;
 
 //Other prep
 
 //Process
-if (i1.T==1)
+if (i1.T==1u)
 {
     valarray<float> X(i1.N()); valarray<int8_t> Y(o1.N());
     try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }
@@ -50,7 +50,7 @@ if (i1.T==1)
         catch (...) { cerr << progstr+": " << __LINE__ << errstr << "problem writing output file (Y)" << endl; return 1; }
     }
 }
-else if (i1.T==101)
+else if (i1.T==101u)
 {
     valarray<complex <float>> X(i1.N()); valarray<int8_t> Y(o1.N());
     try { ifs1.read(reinterpret_cast<char*>(&X[0]),i1.nbytes()); }

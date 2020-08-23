@@ -2,8 +2,8 @@
 #include <numeric>
 
 //Declarations
-const valarray<uint8_t> oktypes = {8,9,16,17,32,33,64,65};
-const size_t I = 2, O = 1;
+const valarray<size_t> oktypes = {8u,9u,16u,17u,32u,33u,64u,65u};
+const size_t I = 2u, O = 1u;
 size_t ri1, ri2, ci1, ci2, si1, si2, hi1, hi2;
 gslice GS1, GS2;
 
@@ -59,7 +59,7 @@ else
 }
 
 //Process
-if (i1.T==8)
+if (i1.T==8u)
 {
     valarray<int8_t> X1(i1.N()), X2(i2.N()), Y(o1.N());
     try { ifs1.read(reinterpret_cast<char*>(&X1[0]),i1.nbytes()); }
