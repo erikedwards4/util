@@ -26,16 +26,17 @@ class ioinfo
         bool ismat() { return (S==1u && H==1u); }
         bool iscube() { return (H==1u); }
         bool issquare() { return (R==C); }
+        size_t nonsingleton1() { if (R>1u) { return 0u; } else if (C>1u) { return 1u; } else if (S>1u) { return 2u; } else if (H>1u) { return 3u; } else { return 0u; } }
         size_t N() { return(R*C*S*H); }
         std::streamsize sz()
         {
             if (T==8u || T==9u || T==10u) { return 1; }
             else if (T==0u || T==16u || T==17u) { return 2; }
-            else if (T==1u || T==32u || T==33u || T==100u) { return 4u; }
-            else if (T==2u || T==64u || T==65u || T==101u) { return 8u; }
-            else if (T==3u || T==102u) { return 16u; }
-            else if (T==103u) { return 32u; }
-            else { return 0u; }
+            else if (T==1u || T==32u || T==33u || T==100u) { return 4; }
+            else if (T==2u || T==64u || T==65u || T==101u) { return 8; }
+            else if (T==3u || T==102u) { return 16; }
+            else if (T==103u) { return 32; }
+            else { return 0; }
         }
         std::streamsize nbytes()
         {
@@ -45,7 +46,7 @@ class ioinfo
             else if (T==2u || T==64u || T==65u || T==101u) { return std::streamsize(8u*R*C*S*H); }
             else if (T==3u || T==102u) { return std::streamsize(16u*R*C*S*H); }
             else if (T==103u) { return std::streamsize(32u*R*C*S*H); }
-            else { return 0u; }
+            else { return 0; }
         }
 };
 
@@ -126,7 +127,7 @@ inline bool read_input_header(std::ifstream &ifs, ioinfo &ii)
         size_t pos1, pos2;
         const unordered_map<string,size_t> typs = {{"FN004",1u},{"FN008",2u},{"IS001",8u},{"IU001",9u},{"IS002",16u},{"IU002",17u},{"IS004",32u},{"IU004",33u},{"IS008",64u},{"IU008",65u},{"FC008",101u},{"FC016",102u}};
         try { getline(ifs,line); } catch (...) { return false; }
-        if (line.compare(0,13,"ARMA_CUB_BIN_")!=0 && line.compare(0,13,"ARMA_MAT_BIN_")!=0) { return false; }
+        if (line.compare(0u,13u,"ARMA_CUB_BIN_")!=0 && line.compare(0u,13u,"ARMA_MAT_BIN_")!=0) { return false; }
         ii.F = size_t(pk);
         pos1 = line.find_last_of("_")+1u; pos2 = line.size();
         try { ii.T = typs.at(line.substr(pos1,pos2-pos1)); } catch (...) { return false; }
@@ -193,7 +194,7 @@ inline bool read_input_header(std::ifstream &ifs, ioinfo &ii)
         pos2 = line.find("fortran_order");
         if (pos2>=line.size()) { std::cerr << "cmli read_input_header: didn't find 'fortran_order' key in numpy HDR" << std::endl; return false; }
         pos1 = line.find_first_of(":",pos2) + 1u;
-        while (line.substr(pos1,1).compare(" ")==0) { pos1++; }
+        while (line.substr(pos1,1u).compare(" ")==0) { pos1++; }
         pos2 = line.find_first_of(",",pos1);
         try { ii.F = fmts.at(line.substr(pos1,pos2-pos1)); }
         catch (...) { std::cerr << "cmli read_input_header: fortran_order str not recognized or not supported for numpy" << std::endl; return false; }

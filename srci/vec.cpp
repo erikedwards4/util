@@ -35,7 +35,7 @@ struct arg_file  *a_fo = arg_filen("o","ofile","<file>",0,O,"output file (Y)");
 if (a_d->count==0) { dim = 0u; }
 else if (a_d->ival[0]<0) { cerr << progstr+": " << __LINE__ << errstr << "dim must be nonnegative" << endl; return 1; }
 else { dim = size_t(a_d->ival[0]); }
-if (dim>3) { cerr << progstr+": " << __LINE__ << errstr << "dim must be in {0,1u,2u,3u}" << endl; return 1; }
+if (dim>3) { cerr << progstr+": " << __LINE__ << errstr << "dim must be in {0,1,2,3u}" << endl; return 1; }
 
 //Checks
 
