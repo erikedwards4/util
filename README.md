@@ -49,12 +49,12 @@ For example:
 /opt/codee/util/bin/sel --help
 ```
 
-Since these utils are used often, a shell variable can be defined:
+Since these utils are used often, a shell variable can be defined:  
 ```console
 u=/opt/codee/util/bin
 ```
 
-This shortens the above to:
+This shortens the above to:  
 ```console
 $u/sel --help
 ```
