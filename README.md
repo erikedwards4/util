@@ -61,14 +61,14 @@ $u/sel --help
 
 
 ## List of functions
-Convert: raw2bin, bin2bin, bin2txt, txt2bin, kaldi2bin  
-Select: col, cols, row, rows, slice, slices, hyperslice, hyperslices, sel  
-Info: size, length, numel, sizeof, isempty, isscalar, isvec, ismat, iscube, isrowvec, iscolvec, issquare  
-Classify: isnan, isfinite, isinf, isnormal, signbit  
-Compare: isgreater, isgreaterequal, isless, islessequal, islessgreater, isunordered  
-Numeric: gcd, lcm  
-Shift: shift, cshift  
-Reshape: reshape, vec  
+Convert: raw2bin bin2bin bin2txt txt2bin kaldi2bin  
+Select: col cols row rows slice slices hyperslice hyperslices sel  
+Info: size length numel sizeof isempty isscalar isvec ismat iscube isrowvec iscolvec issquare  
+Classify: isnan isfinite isinf isnormal signbit  
+Compare: isgreater isgreaterequal isless islessequal islessgreater isunordered  
+Numeric: gcd lcm  
+Shift: shift cshift  
+Reshape: reshape vec  
 
 
 ## Contributing

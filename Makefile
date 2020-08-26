@@ -25,7 +25,7 @@ CFLAGS=$(WFLAG) $(STD) -O3 -march=native $(INCLS)
 
 
 All: all
-all: Dirs CLI_gen Convert Select Info Classify Numeric Shift Clean
+all: Dirs CLI_gen Convert Select Info Classify Compare Numeric Shift Clean
 
 Dirs:
 	mkdir -pm 777 bin obj
