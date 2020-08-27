@@ -3,10 +3,9 @@
 #@license BSD 3-clause
 
 #util is my own library of utility functions in C++.
-#This is the makefile for the command-line tools in C++.
 
-#This is a collection of my own programs to do basic support, conversion, and selection tasks.
-#These are functions written in pure C++ and that generally support all data types.
+#These are command-line tools to do basic support, conversion, and selection tasks.
+#The programs are written in pure C++ and support many data types and tensors up to 4D.
 
 SHELL=/bin/bash
 ss=bin/srci2src
