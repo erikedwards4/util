@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     descr += "\n";
     descr += "The 2nd input is I, the file with the col indices.\n";
     descr += "This must be in binary format with size_t data type,\n";
-    descr += "e.g., echo '0 2 3 7' | txt2bin -f33 > I \n";
+    descr += "e.g., echo '0 2 3 7' | txt2bin -f65 > I \n";
     descr += "\n";
     descr += "This can also be used to repeat or reorder the cols of X,\n";
     descr += "by using an I with col indices repeated or reordered.\n";
@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 
     //Argtable
     int nerrs;
-    struct arg_file  *a_fi = arg_filen(nullptr,nullptr,"<file>",I-1,I,"input files (X,X2)");
+    struct arg_file  *a_fi = arg_filen(nullptr,nullptr,"<file>",I-1,I,"input files (X,I)");
     struct arg_file  *a_fo = arg_filen("o","ofile","<file>",0,O,"output file (Y)");
     struct arg_lit *a_help = arg_litn("h","help",0,1,"display this help and exit");
     struct arg_end  *a_end = arg_end(5);
@@ -109,7 +109,7 @@ int main(int argc, char *argv[])
 
 
     //Checks
-    if (i2.T!=33u && i2.T!=65u) { cerr << progstr+": " << __LINE__ << errstr << "input 2 (I) data type must be 33 (size_t)" << endl; return 1; }
+    if (i2.T!=65u) { cerr << progstr+": " << __LINE__ << errstr << "input 2 (I) data type must be 65 (size_t)" << endl; return 1; }
     if (!i2.isvec()) { cerr << progstr+": " << __LINE__ << errstr << "input 2 (I) must be a vector of indices" << endl; return 1; }
 
 

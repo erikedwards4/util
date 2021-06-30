@@ -13,7 +13,7 @@ descr += "Gets rows of X using array of row indices.\n";
 descr += "\n";
 descr += "The 2nd input is I, the file with the row indices.\n";
 descr += "This must be in binary format with size_t data type,\n";
-descr += "e.g., echo '0 2 3 7' | txt2bin -f33 > I \n";
+descr += "e.g., echo '0 2 3 7' | txt2bin -f65 > I \n";
 descr += "\n";
 descr += "The output Y will have rows in the same order as X.\n";
 descr += "That is, I is effectively sorted to ascending order.\n";
@@ -27,13 +27,13 @@ descr += "$ cat I | rows X > Y \n";
 descr += "$ cat X | rows - I > Y \n";
 
 //Argtable
-struct arg_file  *a_fi = arg_filen(nullptr,nullptr,"<file>",I-1,I,"input files (X,X2)");
+struct arg_file  *a_fi = arg_filen(nullptr,nullptr,"<file>",I-1,I,"input files (X,I)");
 struct arg_file  *a_fo = arg_filen("o","ofile","<file>",0,O,"output file (Y)");
 
 //Get options
 
 //Checks
-if (i2.T!=33u && i2.T!=65u) { cerr << progstr+": " << __LINE__ << errstr << "input 2 (I) data type must be 33 (size_t)" << endl; return 1; }
+if (i2.T!=65u) { cerr << progstr+": " << __LINE__ << errstr << "input 2 (I) data type must be 65 (size_t)" << endl; return 1; }
 if (!i2.isvec()) { cerr << progstr+": " << __LINE__ << errstr << "input 2 (I) must be a vector of indices" << endl; return 1; }
 
 //Set output header info
